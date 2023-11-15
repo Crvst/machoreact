@@ -5,7 +5,7 @@ import './Navigation.css';
 const items = () => {
   return [
     {
-      link: '/',
+      link: '/ProductList',
       title: 'Inventario',
     },
     {

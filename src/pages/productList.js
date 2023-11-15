@@ -1,5 +1,4 @@
 import Footer from './footer';
-
 import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
@@ -63,9 +62,9 @@ export default function ProductList() {
                 {
                   (formattedPrice = producto.price
                     ? producto.price.toLocaleString('es-CR', {
-                        style: 'currency',
-                        currency: 'CRC',
-                      })
+                      style: 'currency',
+                      currency: 'CRC',
+                    })
                     : '')
                 }
               </td>
@@ -89,7 +88,7 @@ export default function ProductList() {
                 <Link
                   className="actions-link "
                   onClick={() => {
-                    DeleteProduct(producto.id,handleProductDeleted);
+                    DeleteProduct(producto.id, handleProductDeleted);
                   }}
                 >
                   Eliminar
@@ -102,7 +101,7 @@ export default function ProductList() {
       <a href="/AddProduct" class="btn-flotante">
         +
       </a>
-      <Footer/>
+      <Footer />
 
     </div>
   );

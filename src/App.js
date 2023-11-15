@@ -1,5 +1,5 @@
 import './App.css';
-
+import MinSection from './pages/minSection';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Navigation from './layout/Navigation';
 import List from './pages/productList';
@@ -38,12 +38,11 @@ import BuysList from './pages/buyList';
 function App() {
   return (
     <div className="App">
-
       <Router>
       <Navigation/>
       <Routes>
         <Route exact path="/ShowProduct" element={<ShowProduct/>}/>
-        <Route exact path="/" element={<List/>}/>
+        <Route exact path="/" element={<MinSection/>}/>
         <Route exact path="/AddProduct" element={<AddProduct/>}/>
         <Route exact path="/DeleteProduct" element={<DeleteProduct/>}/>
         <Route exact path="/EditProduct" element={<EditProduct/>}/>
@@ -72,6 +71,7 @@ function App() {
         <Route exact path="/EditBuys" element={<EditBuys/>}/>
         <Route exact path="/DeleteBuys" element={<DeleteBuys/>}/>
         <Route exact path="/Buys" element={<BuysList/>}/>
+        <Route exact path="/ProductList" element={<List/>}/>
 
         
 
