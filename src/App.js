@@ -40,6 +40,9 @@ function App() {
     <div className="App">
       <Router>
       <Navigation/>
+
+      
+
       <Routes>
         <Route exact path="/ShowProduct" element={<ShowProduct/>}/>
         <Route exact path="/" element={<MinSection/>}/>
@@ -72,13 +75,7 @@ function App() {
         <Route exact path="/DeleteBuys" element={<DeleteBuys/>}/>
         <Route exact path="/Buys" element={<BuysList/>}/>
         <Route exact path="/ProductList" element={<List/>}/>
-
-        
-
-
-        
       </Routes>
-
       </Router>
       
     </div>

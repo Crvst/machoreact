@@ -1,6 +1,7 @@
 import React from "react";
 import IndexMain from "./indexMain";
 import Footer from "./footer";
+import  "./stylesMinSection.css"
 const MinSection = () => {
     return (
         <section>
