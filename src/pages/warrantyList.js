@@ -1,3 +1,5 @@
+import Footer from './footer';
+
 import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
@@ -28,8 +30,8 @@ export default function ProductList() {
 
   return (
     <div className="table-container">
-     
-        <h1>Garantías</h1>
+
+      <h1>Garantías</h1>
       <table className="table">
         <thead className="table-header">
           <tr>
@@ -75,7 +77,7 @@ export default function ProductList() {
                 <Link
                   className="actions-link "
                   onClick={() => {
-                    DeleteWarranty(warranty.id,handleWarrantyDeleted);
+                    DeleteWarranty(warranty.id, handleWarrantyDeleted);
                   }}
                 >
                   Eliminar
@@ -85,8 +87,10 @@ export default function ProductList() {
           ))}
         </tbody>
       </table>
-      <a 
-      href="/AddWarranty" class="btn-flotante">+</a>
+      <a
+        href="/AddWarranty" class="btn-flotante">+</a>
+      <Footer />
+
     </div>
   );
 }

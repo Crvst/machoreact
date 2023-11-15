@@ -1,3 +1,5 @@
+import Footer from './footer';
+
 import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
@@ -100,6 +102,8 @@ export default function ProductList() {
       <a href="/AddProduct" class="btn-flotante">
         +
       </a>
+      <Footer/>
+
     </div>
   );
 }

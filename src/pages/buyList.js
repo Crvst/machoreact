@@ -1,3 +1,5 @@
+import Footer from './footer';
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './styles.css';
@@ -85,6 +87,8 @@ export default function BuyList() {
         <a href="/AddBuys" class="btn-flotante">
         +
       </a>
+      <Footer/>
+
       </div>
   );
 

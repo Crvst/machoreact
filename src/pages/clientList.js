@@ -1,3 +1,4 @@
+import Footer from './footer';
 import React, { useEffect, useState } from 'react'
 
 import axios from "axios"
@@ -108,7 +109,10 @@ export default function ClientList() {
         </table>
         <a href="/AddClient" class="btn-flotante">+</a>
 
-    
+        <Footer/>
+
     </div>
+    
+    
   )
 }

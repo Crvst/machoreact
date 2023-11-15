@@ -1,3 +1,4 @@
+import Footer from './footer';
 import React, { useEffect, useState } from 'react'
 
 import axios from "axios"
@@ -108,7 +109,7 @@ export default function VehicleList() {
         </table>
         <a href="/AddVehicle" class="btn-flotante">+</a>
 
-    
+        <Footer/>
     </div>
   )
 }
