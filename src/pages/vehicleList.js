@@ -33,7 +33,6 @@ export default function VehicleList() {
 
   const loadVehicles = async () => {
     
-
     try {
       const response = await axios.get('https://localhost:7070/api/Vehicles');
       setVehicles(response.data);
@@ -51,6 +50,7 @@ export default function VehicleList() {
           <thead className='table-header'>
             <tr>
               <th >#</th>
+              <th >Id</th>
               <th >Placa</th>
               <th >Marca</th>
               <th >Modelo</th>
@@ -66,6 +66,7 @@ export default function VehicleList() {
               vehicles.map((vehicle, index) => (
                 <tr>
                   <th scope="row" key={index}>{index + 1}</th>
+                  <td>{vehicle.id}</td>
                   <td>{vehicle.plate}</td>
                   <td>{vehicle.brand}</td>
                   <td>{vehicle.model}</td>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-function deleteAlert(apiUrl, updateList) {
+function deleteAlert(apiUrl, updateList, dato) {
     Swal.fire({
       title: '¿Estás seguro de que deseas eliminar?',
       text: 'No podrás corregir esto.',
@@ -21,7 +21,7 @@ function deleteAlert(apiUrl, updateList) {
           .then((response) => {
             Swal.fire({
               title: 'Eliminado!',
-              text: 'El producto se eliminó con éxito!',
+              text: `${dato} se eliminó con éxito!`,
               icon: 'success',
               footer: '<link rel="stylesheet" href="/globalAlert.css"></link> ',
               confirmButtonColor: '#333',
@@ -33,7 +33,7 @@ function deleteAlert(apiUrl, updateList) {
           .catch((error) => {
             Swal.fire({
               title: 'Error!',
-              text: 'Hubo un error al eliminar el producto',
+              text: `Hubo un error al eliminar ${dato}`,
               icon: 'error',
               footer: '<link rel="stylesheet" href="/globalAlert.css"></link> ',
               confirmButtonColor: '#333',
@@ -44,7 +44,7 @@ function deleteAlert(apiUrl, updateList) {
       } else {
         Swal.fire({
           title: 'Eliminación Cancelada!',
-          text: 'Se canceló la eliminación del producto',
+          text: `Se canceló la eliminación de ${dato}`,
           icon: 'error',
           footer: '<link rel="stylesheet" href="/globalAlert.css"></link> ',
           confirmButtonColor: '#333',

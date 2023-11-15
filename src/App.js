@@ -3,6 +3,7 @@ import './App.css';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Navigation from './layout/Navigation';
 import List from './pages/productList';
+import Sales from './pages/saleList';
 import DeleteProduct from './producto/DeleteProduct';
 import EditProduct from './producto/EditProduct';                                                                                                                                                                                                                                        
 import ShowProduct from './producto/ShowProduct'
@@ -22,6 +23,16 @@ import ShowClient from './client/ShowClient';
 import EditClient from './client/EditClient';
 import DeleteClient from './client/DeleteClient';
 import ClientList from './pages/clientList';
+import ShowSale from './sale/ShowSale';
+import EditSale from './sale/EditSale';
+import AddSale from './sale/AddSale';
+import DeleteSale from './sale/DeleteSale';
+import AddBuys from './buy/AddBuys';
+import ShowBuys from './buy/ShowBuys';
+import EditBuys from './buy/EditBuys';
+import DeleteBuys from './buy/DeleteBuys';
+import BuysList from './pages/buyList';
+
 
 
 function App() {
@@ -37,6 +48,7 @@ function App() {
         <Route exact path="/DeleteProduct" element={<DeleteProduct/>}/>
         <Route exact path="/EditProduct" element={<EditProduct/>}/>
         <Route exact path="/Warranty" element={<Warranty/>}/>
+        <Route exact path="/Sales" element={<Sales/>}/>
         <Route exact path="/AddWarranty" element={<AddWarranty/>}/>
         <Route exact path="/EditWarranty" element={<EditWarranty/>}/>
         <Route exact path="/DeleteWarranty" element={<DeleteWarranty/>}/>
@@ -51,6 +63,16 @@ function App() {
         <Route exact path="/EditClient" element={<EditClient/>}/>
         <Route exact path="/DeleteClient" element={<DeleteClient/>}/>
         <Route exact path="/Client" element={<ClientList/>}/>
+        <Route exact path="/ShowSale" element={<ShowSale/>}/>
+        <Route exact path="/EditSale" element={<EditSale/>}/>
+        <Route exact path="/AddSale" element={<AddSale/>}/>
+        <Route exact path="/DeleteSale" element={<DeleteSale/>}/>
+        <Route exact path="/AddBuys" element={<AddBuys/>}/>
+        <Route exact path="/ShowBuys" element={<ShowBuys/>}/>
+        <Route exact path="/EditBuys" element={<EditBuys/>}/>
+        <Route exact path="/DeleteBuys" element={<DeleteBuys/>}/>
+        <Route exact path="/Buys" element={<BuysList/>}/>
+
         
 
 
