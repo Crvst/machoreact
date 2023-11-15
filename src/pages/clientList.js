@@ -4,6 +4,7 @@ import axios from "axios"
 import './styles.css';
 
 import { Link, useParams } from 'react-router-dom'
+import DeleteClient from '../client/DeleteClient';
 
 export default function ClientList() {
   const [clients, setClients] = useState([]);
@@ -91,7 +92,9 @@ export default function ClientList() {
 
                 <Link
                   className="actions-link "
-                  to={`/DeleteClient?id=${client.id}`}
+                  onClick={() => {
+                    DeleteClient(client.id,loadClients);
+                  }}
                 >
                   Eliminar
                 </Link>
