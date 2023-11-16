@@ -43,7 +43,7 @@
   }
   
   .table th, .product-table td {
-    border: 1px solid #ddd;
+    border: 1px solid #fddb3a;
     padding: 12px;
     text-align: left;
   }
@@ -59,8 +59,8 @@
   
   /* Estilos para el botón de enviar */
   .submit-button {
-    background-color: #fddb3a;
-    color: black;
+    background-color: black;
+    color: white;
     padding: 5px;
     border: none;
     border-radius: 2px;
@@ -69,6 +69,7 @@
   }
   
   .submit-button:hover {
-    background-color: rgb(26, 25, 13);
+    background-color: #fddb3a;
+    color: black;
   }
   
