@@ -40,9 +40,6 @@ function App() {
     <div className="App">
       <Router>
       <Navigation/>
-
-      
-
       <Routes>
         <Route exact path="/ShowProduct" element={<ShowProduct/>}/>
         <Route exact path="/" element={<MinSection/>}/>
