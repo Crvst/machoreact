@@ -84,7 +84,7 @@ export default function AddSale() {
       await axios.post('https://localhost:7070/api/SaleProducts', saleProductData);
     }
 
-    navigate('/');
+    navigate('/Sales');
     Swal.fire(
       'Venta Agregado!',
       'La venta se almacenó con éxito!',
