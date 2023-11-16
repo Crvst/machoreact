@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import './sale.css';
+import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 export default function AddSale() {
@@ -84,6 +85,11 @@ export default function AddSale() {
     }
 
     navigate('/');
+    Swal.fire(
+      'Venta Agregado!',
+      'La venta se almacenó con éxito!',
+      'success'
+    )
   };
 
   useEffect(() => {
