@@ -1,0 +1,44 @@
+.view-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .view-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .view-label {
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .view-value {
+    font-size: 16px;
+  }
+  
+  .view-total {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .view-footer {
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+  }
+  
+  .view-footer p {
+    margin: 5px 0;
+  }
+  
+  .view-footer strong {
+    color: #333;
+  }
+  

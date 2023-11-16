@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import './view.css';
 
 export default function ShowSale() {
   const [sale, setSale] = useState({});
   const [products, setProducts] = useState([]);
+  const [clientName, setClientName] = useState('');
+  const [employeeName, setEmployeeName] = useState('');
 
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
@@ -12,12 +14,21 @@ export default function ShowSale() {
   useEffect(() => {
     const loadSale = async () => {
       try {
+        // Obtener información de la venta
         const saleResult = await axios.get(`https://localhost:7070/api/Sales/${id}`);
         setSale(saleResult.data);
 
-        // Obtén los productos asociados a la venta
+        // Obtener información de los productos asociados a la venta
         const productsResult = await axios.get(`https://localhost:7070/api/SaleProducts/${id}/products`);
         setProducts(productsResult.data);
+
+        // Obtener información del cliente
+        const clientResult = await axios.get(`https://localhost:7070/api/Clients/${saleResult.data.clientId}`);
+        setClientName(clientResult.data.name);
+
+        // Obtener información del empleado
+        const employeeResult = await axios.get(`https://localhost:7070/api/Employees/${saleResult.data.employeeId}`);
+        setEmployeeName(employeeResult.data.name);
       } catch (error) {
         console.error('Error al cargar la venta:', error);
       }
@@ -28,7 +39,6 @@ export default function ShowSale() {
 
   return (
     <div>
-      <link rel="stylesheet" href="/globalView.css"></link>
       <div className="view-container">
         <div className="view-row">
           <label className="view-label">Código:</label>
@@ -47,18 +57,18 @@ export default function ShowSale() {
           <label className="view-value">{sale.discount}</label>
         </div>
         <div className="view-row">
-          <label className="view-label">ID del Empleado:</label>
-          <label className="view-value">{sale.employeeId}</label>
+          <label className="view-label">Empleado:</label>
+          <label className="view-value">{employeeName}</label>
         </div>
         <div className="view-row">
-          <label className="view-label">ID del Cliente:</label>
-          <label className="view-value">{sale.clientId}</label>
+          <label className="view-label">Cliente:</label>
+          <label className="view-value">{clientName}</label>
         </div>
         <div className="view-row">
           <label className="view-label">Productos:</label>
           <ul>
             {products.map((product) => (
-              <li key={product.id}>{product.name}</li>
+              <li key={product.id}>{product.name} Precio {product.price}</li>
             ))}
           </ul>
         </div>
