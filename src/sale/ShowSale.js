@@ -24,7 +24,7 @@ export default function ShowSale() {
 
         // Obtener información del cliente
         const clientResult = await axios.get(`https://localhost:7070/api/Clients/${saleResult.data.clientId}`);
-        setClientName(clientResult.data.name);
+        setClientName(clientResult.data);
 
         // Obtener información del empleado
         const employeeResult = await axios.get(`https://localhost:7070/api/Employees/${saleResult.data.employeeId}`);
@@ -62,7 +62,7 @@ export default function ShowSale() {
         </div>
         <div className="view-row">
           <label className="view-label">Cliente:</label>
-          <label className="view-value">{clientName}</label>
+          <label className="view-value">{clientName.name} {clientName.lastName}</label>
         </div>
         <div className="view-row">
           <label className="view-label">Productos:</label>
