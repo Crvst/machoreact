@@ -5,6 +5,7 @@ import axios from 'axios';
 import './styles.css';
 
 import { Link, useParams } from 'react-router-dom';
+import DeleteSale from '../sale/DeleteSale';
 
 export default function SaleList() {
   const [sales, setSales] = useState([]);
@@ -82,8 +83,10 @@ export default function SaleList() {
                   Editar
                 </Link>
                 <Link
-                  className="actions-link"
-                  to={`DeleteSale?id=${sale.id}`}
+                  className="actions-link "
+                  onClick={() => {
+                    DeleteSale(sale.id, loadSales);
+                  }}
                 >
                   Eliminar
                 </Link>
