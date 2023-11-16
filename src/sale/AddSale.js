@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-
+import './sale.css';
 import { useNavigate } from 'react-router-dom';
+
+
 
 export default function AddSale() {
   let navigate = useNavigate();
@@ -18,12 +20,29 @@ export default function AddSale() {
   const [products, setProducts] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [clients, setClients] = useState([]);
+  const salep = [];
+
+
+
+  // Estado para almacenar productos seleccionados
+  const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+
+  const handleSeleccionProducto = (id) => {
+    const productoYaSeleccionado = productosSeleccionados.includes(id);
+    if (productoYaSeleccionado) {
+      setProductosSeleccionados(productosSeleccionados.filter((productoId) => productoId !== id));
+    } else {
+      setProductosSeleccionados([...productosSeleccionados, id]);
+    }
+  }
 
   const { code, date, total, discount, employeeId, clientId, productId } = sale;
 
   const onInputChange = (e) => {
     setSale({ ...sale, [e.target.name]: e.target.value });
   };
+
+
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -34,6 +53,7 @@ export default function AddSale() {
 
     return `${year}-${month}-${day}`;
   };
+
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -46,13 +66,31 @@ export default function AddSale() {
       clientId: parseInt(clientId),
       productId: parseInt(productId),
     };
-
     // Realiza la solicitud POST a la API utilizando axios
-    await axios.post('https://localhost:7070/api/Sales', saleData);
+    const response = await axios.post('https://localhost:7070/api/Sales', saleData);
+
+
+    //agregar los productos seleccionados 
+    const saleId = response.data.id;
+
+    // Recorre los productos seleccionados y agrégales a la tabla de SaleProducts
+    for (const productId of productosSeleccionados) {
+      const saleProductData = {
+        saleId: saleId,
+        productId: productId,
+      };
+
+      // Realiza la solicitud POST a la API para agregar los productos de la venta
+      await axios.post('https://localhost:7070/api/SaleProducts', saleProductData);
+    }
+
     navigate('/');
   };
 
-  ///caragar lo productos y empleados
+
+
+
+  ///cargar lo productos y empleados
 
   useEffect(() => {
     loadProducts();
@@ -86,119 +124,124 @@ export default function AddSale() {
       console.error('Error al cargar los clientes:', error);
     }
   };
-
+  //////////////
   return (
-    <div>
-      <link rel="stylesheet" href="/globalForm.css"></link>
-      <div className="container">
-        <h2 className="heading">Registrar Venta</h2>
+    <div className='container'>
+      <h2 className='heading'>Registrar Venta</h2>
 
-        <form onSubmit={(e) => onSubmit(e)}>
-          <div className="form-group">
-            <label className="form-label">Código</label>
-            <input
-              type={'number'}
-              className="form-control"
-              placeholder="Ingresa el código de venta"
-              name="code"
-              value={code}
-              onChange={(e) => onInputChange(e)}
-            />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Fecha</label>
-            <input
-              type={'date'}
-              className="form-control"
-              placeholder="Ingresa la fecha"
-              name="date"
-              value={date}
-              onChange={(e) => onInputChange(e)}
-            />
-          </div>
+      <form onSubmit={(e) => onSubmit(e)}>
+        <div className='form-group'>
+          <label className='form-label'>Código</label>
+          <input
+            type={'number'}
+            className="form-control"
+            placeholder="Ingresa el código de venta"
+            name="code"
+            value={code}
+            onChange={(e) => onInputChange(e)}
+          />
+        </div>
+        <div className='form-group'>
+          <label className='form-label'>Fecha</label>
+          <input
+            type={'date'}
+            className="form-control"
+            placeholder="Ingresa la fecha"
+            name="date"
+            value={date}
+            onChange={(e) => onInputChange(e)}
+          />
+        </div>
 
-          <div className="form-group">
-            <label className="form-label">Total</label>
-            <input
-              type={'number'}
-              step="0.01"
-              className="form-control"
-              placeholder="Ingresa el total"
-              name="total"
-              value={total}
-              onChange={(e) => onInputChange(e)}
-            />
-          </div>
+        <div className='form-group'>
+          <label className='form-label'>Total</label>
+          <input
+            type={'number'}
+            step="0.01"
+            className="form-control"
+            placeholder="Ingresa el total"
+            name="total"
+            value={total}
+            onChange={(e) => onInputChange(e)}
+          />
+        </div>
 
-          <div className="form-group">
-            <label className="form-label">Descuento</label>
-            <input
-              type={'number'}
-              step="0.01"
-              className="form-control"
-              placeholder="Ingresa el descuento"
-              name="discount"
-              value={discount}
-              onChange={(e) => onInputChange(e)}
-            />
-          </div>
+        <div className='form-group'>
+          <label className='form-label'>Descuento</label>
+          <input
+            type={'number'}
+            step="0.01"
+            className='form-control'
+            placeholder="Ingresa el descuento"
+            name="discount"
+            value={discount}
+            onChange={(e) => onInputChange(e)}
+          />
+        </div>
 
-          <div className="form-group">
-            <label className="form-label">Empleado</label>
-            <select
-              className="form-control"
-              name="employeeId"
-              value={employeeId}
-              onChange={(e) => onInputChange(e)}
-            >
-              <option value="">Selecciona un empleado</option>
-              {employees.map((employee) => (
-                <option key={employee.id} value={employee.id}>
-                  {employee.name}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className='form-group'>
+          <label className='form-label'>Empleado</label>
+          <select
+            className="form-control"
+            name="employeeId"
+            value={employeeId}
+            onChange={(e) => onInputChange(e)}
+          >
+            <option value="">Selecciona un empleado</option>
+            {employees.map((employee) => (
+              <option key={employee.id} value={employee.id}>
+                {employee.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-          <div className="form-group">
-            <label className="form-label">Cliente</label>
-            <select
-              className="form-control"
-              name="clientId"
-              value={clientId}
-              onChange={(e) => onInputChange(e)}
-            >
-              <option value="">Selecciona un cliente</option>
-              {clients.map((client) => (
-                <option key={client.id} value={client.id}>
-                  {client.name}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className='form-group'>
+          <label className='form-label'>Cliente</label>
+          <select
+            className="form-control"
+            name="clientId"
+            value={clientId}
+            onChange={(e) => onInputChange(e)}>
+            <option value="">Selecciona un cliente</option>
+            {clients.map((client) => (
+              <option key={client.id} value={client.id}>
+                {client.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-          <div className="form-group">
-            <label className="form-label">Producto</label>
-            <select
-              className="form-control"
-              name="productId"
-              value={productId}
-              onChange={(e) => onInputChange(e)}
-            >
-              <option value="">Selecciona un producto</option>
+        <div className='form-group'>
+          <label className='form-label'>Productos</label>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Nombre del Producto</th>
+                <th>Seleccione el producto</th>
+              </tr>
+            </thead>
+            <tbody>
               {products.map((product) => (
-                <option key={product.id} value={product.id}>
-                  {product.name}
-                </option>
+                <tr key={product.id}>
+                  <td>{product.name}</td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      onChange={() => handleSeleccionProducto(product.id)}
+                      checked={productosSeleccionados.includes(product.id)}
+                    />
+                  </td>
+                </tr>
               ))}
-            </select>
-          </div>
+            </tbody>
+          </table>
+          {/* Puedes utilizar el array de productos seleccionados (productosSeleccionados) según tus necesidades */}
+          <p>Productos seleccionados: {productosSeleccionados.join(', ')}</p>
+        </div>
 
-          <button className="submit-button" type="submit">
-            Registrar Venta
-          </button>
-        </form>
-      </div>
+        <button className='submit-button' type="submit">Registrar Venta</button>
+      </form>
     </div>
   );
 }
