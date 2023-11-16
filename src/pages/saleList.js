@@ -40,7 +40,6 @@ export default function SaleList() {
             <th>Descuento</th>
             <th>Empleado ID</th>
             <th>Cliente ID</th>
-            <th>Producto ID</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -69,7 +68,6 @@ export default function SaleList() {
                 }</td>
               <td>{sale.employeeId}</td>
               <td>{sale.clientId}</td>
-              <td>{sale.productId}</td>
               <td className="actions">
                 <Link
                   className="actions-link"
