@@ -3,15 +3,13 @@ import React, { useEffect, useState } from 'react';
 import './sale.css';
 import { useNavigate } from 'react-router-dom';
 
-
-
 export default function AddSale() {
   let navigate = useNavigate();
 
   const [sale, setSale] = useState({
     code: '',
     date: '',
-    total: '',
+    total: '', // Modificar el tipo de dato a number
     discount: '',
     employeeId: '',
     clientId: '',
@@ -21,8 +19,6 @@ export default function AddSale() {
   const [employees, setEmployees] = useState([]);
   const [clients, setClients] = useState([]);
   const salep = [];
-
-
 
   // Estado para almacenar productos seleccionados
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
@@ -42,55 +38,53 @@ export default function AddSale() {
     setSale({ ...sale, [e.target.name]: e.target.value });
   };
 
-
-
   const formatDate = (date) => {
     const d = new Date(date);
-
-    const year = d.getFullYear().toString().slice(-4); // Obtiene los últimos dos dígitos del año
-    const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Ajusta el mes para tener siempre dos dígitos
-    const day = d.getDate().toString().padStart(2, '0'); // Ajusta el día para tener siempre dos dígitos
-
+    const year = d.getFullYear().toString().slice(-4);
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
 
+  const calculateTotal = () => {
+    // Calcular el total sumando los precios de los productos seleccionados
+    const selectedProducts = products.filter((product) => productosSeleccionados.includes(product.id));
+    const totalAmount = selectedProducts.reduce((total, product) => total + product.price, 0);
+    return totalAmount.toFixed(2); // Redondear el resultado a dos decimales
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    
+    // Calcular el total
+    const calculatedTotal = calculateTotal();
+
     const saleData = {
       code: parseInt(code),
-      date: formatDate(date), // Formatear la fecha aquí
-      total: parseFloat(total),
+      date: formatDate(date),
+      total: parseFloat(calculatedTotal), // Usar el total calculado
       discount: parseFloat(discount),
       employeeId: parseInt(employeeId),
       clientId: parseInt(clientId),
       productId: parseInt(productId),
     };
-    // Realiza la solicitud POST a la API utilizando axios
+
     const response = await axios.post('https://localhost:7070/api/Sales', saleData);
 
-
-    //agregar los productos seleccionados 
     const saleId = response.data.id;
 
-    // Recorre los productos seleccionados y agrégales a la tabla de SaleProducts
+    // Recorrer los productos seleccionados y agregarlos a la tabla de SaleProducts
     for (const productId of productosSeleccionados) {
       const saleProductData = {
         saleId: saleId,
         productId: productId,
       };
 
-      // Realiza la solicitud POST a la API para agregar los productos de la venta
       await axios.post('https://localhost:7070/api/SaleProducts', saleProductData);
     }
 
     navigate('/');
   };
-
-
-
-
-  ///cargar lo productos y empleados
 
   useEffect(() => {
     loadProducts();
@@ -124,7 +118,7 @@ export default function AddSale() {
       console.error('Error al cargar los clientes:', error);
     }
   };
-  //////////////
+
   return (
     <div className='container'>
       <h2 className='heading'>Registrar Venta</h2>
@@ -161,8 +155,8 @@ export default function AddSale() {
             className="form-control"
             placeholder="Ingresa el total"
             name="total"
-            value={total}
-            onChange={(e) => onInputChange(e)}
+            value={calculateTotal()} // Usar el total calculado
+            onChange={(e) => onInputChange(e)} // Permitir que el usuario lo edite si es necesario
           />
         </div>
 
@@ -236,7 +230,6 @@ export default function AddSale() {
               ))}
             </tbody>
           </table>
-          {/* Puedes utilizar el array de productos seleccionados (productosSeleccionados) según tus necesidades */}
           <p>Productos seleccionados: {productosSeleccionados.join(', ')}</p>
         </div>
 
