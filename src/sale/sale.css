@@ -60,11 +60,12 @@
   /* Estilos para el botón de enviar */
   .submit-button {
     background-color: #fddb3a;
-    color: white;
-    padding: 12px;
+    color: black;
+    padding: 5px;
     border: none;
-    border-radius: 5px;
+    border-radius: 2px;
     cursor: pointer;
+    font-family: Arial, sans-serif;
   }
   
   .submit-button:hover {
