@@ -46,12 +46,12 @@ export default function AddSale() {
     const day = d.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
-
-  const calculateTotal = () => {
     // Calcular el total sumando los precios de los productos seleccionados
+  const calculateTotal = () => {
+
     const selectedProducts = products.filter((product) => productosSeleccionados.includes(product.id));
     const totalAmount = selectedProducts.reduce((total, product) => total + product.price, 0);
-    return totalAmount.toFixed(2); // Redondear el resultado a dos decimales
+    return totalAmount.toFixed(2); 
   };
 
   const onSubmit = async (e) => {
