@@ -1,27 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import { Link, useNavigate } from 'react-router-dom';
 
 export default function ShowSale() {
-  let navigate = useNavigate();
   const [sale, setSale] = useState({});
+  const [products, setProducts] = useState([]);
 
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
 
   useEffect(() => {
-    loadSale();
-  }, []);
+    const loadSale = async () => {
+      try {
+        const saleResult = await axios.get(`https://localhost:7070/api/Sales/${id}`);
+        setSale(saleResult.data);
 
-  const loadSale = async () => {
-    try {
-      const result = await axios.get(`https://localhost:7070/api/Sales/${id}`);
-      setSale(result.data);
-    } catch (error) {
-      console.error('Error al cargar la venta:', error);
-    }
-  };
+        // Obtén los productos asociados a la venta
+        const productsResult = await axios.get(`https://localhost:7070/api/SaleProducts/${id}/products`);
+        setProducts(productsResult.data);
+      } catch (error) {
+        console.error('Error al cargar la venta:', error);
+      }
+    };
+
+    loadSale();
+  }, [id]);
 
   return (
     <div>
@@ -52,8 +55,12 @@ export default function ShowSale() {
           <label className="view-value">{sale.clientId}</label>
         </div>
         <div className="view-row">
-          <label className="view-label">ID del Producto:</label>
-          <label className="view-value">{sale.productId}</label>
+          <label className="view-label">Productos:</label>
+          <ul>
+            {products.map((product) => (
+              <li key={product.id}>{product.name}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
