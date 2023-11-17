@@ -1,12 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 export default function EditSale() {
   let navigate = useNavigate();
 
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
+
 
   const [sale, setSale] = useState({
     code: '',
@@ -15,8 +17,28 @@ export default function EditSale() {
     discount: '',
     employeeId: '',
     clientId: '',
-    productId: '',
+    productId:'',
   });
+
+  const [products, setProducts] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [productsL, setProductsL] = useState([]);
+  const salep = [];
+
+  // Estado para almacenar productos seleccionados
+  const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+
+  const handleSeleccionProducto = (id) => {
+    const productoYaSeleccionado = productosSeleccionados.includes(id);
+    if (productoYaSeleccionado) {
+      setProductosSeleccionados(
+        productosSeleccionados.filter((productoId) => productoId !== id)
+      );
+    } else {
+      setProductosSeleccionados([...productosSeleccionados, id]);
+    }
+  };
 
   const { code, date, total, discount, employeeId, clientId, productId } = sale;
 
@@ -26,12 +48,41 @@ export default function EditSale() {
 
   useEffect(() => {
     loadSale();
+    loadProducts();
+    loadEmployees();
+    loadClients();
   }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.put(`https://localhost:7070/api/Sales/${id}`, sale);
-    navigate('/');
+
+    const saleData = {
+      code: parseInt(code),
+      date: date,
+      total: parseFloat(total),
+      discount: parseFloat(discount),
+      employeeId: parseInt(employeeId),
+      clientId: parseInt(clientId),
+      productId: parseInt(productId),
+    };
+
+    await axios.put(`https://localhost:7070/api/Sales/${id}`, saleData);
+
+    // Recorrer los productos seleccionados y actualizar la tabla de SaleProducts
+    for (const productId of productosSeleccionados) {
+      const saleProductData = {
+        saleId: id,
+        productId: productId,
+      };
+
+      await axios.post(
+        'https://localhost:7070/api/SaleProducts',
+        saleProductData
+      );
+    }
+
+    navigate('/Sales');
+    Swal.fire('Venta Actualizada!', 'La venta se actualizó con éxito!', 'success');
   };
 
   const loadSale = async () => {
@@ -39,10 +90,41 @@ export default function EditSale() {
     setSale(result.data);
   };
 
+  const loadProducts = async () => {
+    try {
+      // Obtener información de los productos asociados a la venta
+      const productsResult = await axios.get(`https://localhost:7070/api/SaleProducts/${id}/products`);
+      setProductsL(productsResult.data);
+      const response = await axios.get('https://localhost:7070/api/Products');
+      setProducts(response.data);
+    } catch (error) {
+      console.error('Error al cargar los productos:', error);
+    }
+  };
+
+  const loadEmployees = async () => {
+    try {
+      const response = await axios.get('https://localhost:7070/api/Employees');
+      setEmployees(response.data);
+    } catch (error) {
+      console.error('Error al cargar los empleados:', error);
+    }
+  };
+
+  const loadClients = async () => {
+    try {
+      const response = await axios.get('https://localhost:7070/api/Clients');
+      setClients(response.data);
+    } catch (error) {
+      console.error('Error al cargar los clientes:', error);
+    }
+  };
+
   return (
     <div>
-      <link rel="stylesheet" href="/globalForm.css"></link>
+      <link rel="stylesheet" href="/sale.css"></link>
       <div className="container">
+        <p>.</p>
         <h2 className="heading">Editar Venta</h2>
 
         <form onSubmit={(e) => onSubmit(e)}>
@@ -93,39 +175,73 @@ export default function EditSale() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">ID del Empleado</label>
-            <input
-              type={'number'}
+            <label className="form-label">Empleado</label>
+            <select
               className="form-control"
-              placeholder="Ingresa el ID del empleado"
               name="employeeId"
               value={employeeId}
               onChange={(e) => onInputChange(e)}
-            />
+            >
+              <option value="">Selecciona un empleado</option>
+              {employees.map((employee) => (
+                <option key={employee.id} value={employee.id}>
+                  {employee.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="form-group">
-            <label className="form-label">ID del Cliente</label>
-            <input
-              type={'number'}
+            <label className="form-label">Cliente</label>
+            <select
               className="form-control"
-              placeholder="Ingresa el ID del cliente"
               name="clientId"
               value={clientId}
               onChange={(e) => onInputChange(e)}
-            />
+            >
+              <option value="">Selecciona un cliente</option>
+              {clients.map((client) => (
+                <option key={client.id} value={client.id}>
+                  {client.name}
+                </option>
+              ))}
+            </select>
           </div>
-
+          <div className="view-row">
+          <label className="view-label">Productos:</label>
+          <div className='view-container'>
+          <ul>
+            {productsL.map((product) => (
+              <li key={product.id}>{product.name} Precio {product.price}</li>
+            ))}
+          </ul>
+          </div>
+        </div>
           <div className="form-group">
-            <label className="form-label">ID del Producto</label>
-            <input
-              type={'number'}
-              className="form-control"
-              placeholder="Ingresa el ID del producto"
-              name="productId"
-              value={productId}
-              onChange={(e) => onInputChange(e)}
-            />
+            <label className="form-label">Productos</label>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Nombre del Producto</th>
+                  <th>Seleccione el producto</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product) => (
+                  <tr key={product.id}>
+                    <td>{product.name}</td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        onChange={() => handleSeleccionProducto(product.id)}
+                        checked={productosSeleccionados.includes(product.id)}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p>Productos seleccionados: {productosSeleccionados.join(', ')}</p>
           </div>
 
           <button className="submit-button" type="submit">
