@@ -36,7 +36,6 @@ export default function ProductList() {
         <thead className="table-header">
           <tr>
             <th>#</th>
-            <th>Id</th>
             <th>Descripción</th>
             <th>Producto</th>
             <th>Vehículo</th>
@@ -51,8 +50,6 @@ export default function ProductList() {
               <th scope="row" key={index}>
                 {index + 1}
               </th>
-
-              <td>{warranty.id}</td>
               <td>{warranty.description}</td>
               <td>{warranty.product.name}</td>
               <td>{warranty.vehicle.brand}</td>

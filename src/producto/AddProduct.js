@@ -50,11 +50,15 @@ export default function AddProduct() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const productData =
-      productType === 'Batería' ? { ...product, ...battery } : product;
+    
 
     e.preventDefault();
-    await axios.post('https://localhost:7070/api/Products', productData);
+    await axios.post('https://localhost:7070/api/Products', product);
+
+    if (productType === 'Batería') {
+      await axios.post('https://localhost:7070/api/Batteries', battery);
+    }
+
     navigate('/');
     Swal.fire(
       'Producto Agregado!',

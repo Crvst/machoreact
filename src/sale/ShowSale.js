@@ -66,11 +66,13 @@ export default function ShowSale() {
         </div>
         <div className="view-row">
           <label className="view-label">Productos:</label>
+          <div className='view-container'>
           <ul>
             {products.map((product) => (
               <li key={product.id}>{product.name} Precio {product.price}</li>
             ))}
           </ul>
+          </div>
         </div>
       </div>
     </div>
