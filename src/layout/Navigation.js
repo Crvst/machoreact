@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dropdown from './Dropdown';
 import './Navigation.css';
 
@@ -26,13 +26,31 @@ const handleClick = (option) => {
     case 'Ventas':
       window.location.href = '/Sales';
       break;
-      case 'Compras':
-        window.location.href = '/Buys';
-        break;
+    case 'Compras':
+      window.location.href = '/Buys';
+      break;
+    default:
+      break;
   }
 };
 
 export default function Navigation() {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const handleScroll = () => {
+    const scrollY = window.scrollY;
+    const scrolled = scrollY > 0;
+    setIsScrolled(scrolled);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+
   return (
     <nav className="navMenu">
       <div className="company-logo">
