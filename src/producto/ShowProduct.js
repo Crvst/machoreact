@@ -64,8 +64,9 @@ export default function ShowProduct() {
           <label class="view-label">Tipo:</label>
           <label class="view-value">{product.productType}</label>
         </div>
+        <>--------------------------------------------------------</>
         {product.productType === 'Batería' && (
-          <div className='view-container'>
+          <div className='view-container-details'>
             <div className="view-row">
               <label className="view-label">Modelo:</label>
               <label className="view-value">{battery.model}</label>
