@@ -34,6 +34,7 @@ import DeleteBuys from './buy/DeleteBuys';
 import BuysList from './pages/buyList';
 import Login from './log/login';
 import BranchList from './pages/branchList';
+import AddBranches from './branch/AddBranch';
 
 
 function App() {
@@ -75,6 +76,7 @@ function App() {
         <Route exact path="/ProductList" element={<List/>}/>
         <Route exact path="/Login" element={<Login/>}/>
         <Route exact path="/Branch" element={<BranchList/>}/>
+        <Route exact path="/AddBranch" element={<AddBranches/>}/>
       </Routes>
       </Router>
       

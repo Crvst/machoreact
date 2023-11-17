@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import './AddProduct.css';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -25,10 +24,12 @@ export default function AddBranches() {
     e.preventDefault();
     // Realiza la solicitud POST a la API utilizando axios
     await axios.post('https://localhost:7070/api/Branches', branch);
-    navigate('/');
+    navigate('/Branch');
   };
 
   return (
+    <div>
+      <link rel="stylesheet" href="/globalForm.css"></link>
     <div className='container'>
       <h2 className='heading'>Register Branch</h2>
 
@@ -95,6 +96,7 @@ export default function AddBranches() {
 
         <button className='submit-button' type='submit'>Registrar</button>
       </form>
+    </div>
     </div>
   );
 }

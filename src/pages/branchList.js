@@ -69,6 +69,9 @@ export default function BranchList() {
             ))}
           </tbody>
         </table>
+        <a href="/AddBranch" className="btn-flotante">
+        +
+      </a>
         <Footer />
       </div>
     </div>
