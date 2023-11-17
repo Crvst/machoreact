@@ -80,7 +80,7 @@ export default function Navigation() {
             className="title_activator"
             onClick={() => handleClick('Vehiculos')}
           >
-            Vehiculos
+            Vehículos
           </button>
         </div>
       </div>
