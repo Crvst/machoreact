@@ -32,7 +32,7 @@ import ShowBuys from './buy/ShowBuys';
 import EditBuys from './buy/EditBuys';
 import DeleteBuys from './buy/DeleteBuys';
 import BuysList from './pages/buyList';
-
+import Login from './log/login';
 
 
 function App() {
@@ -72,6 +72,7 @@ function App() {
         <Route exact path="/DeleteBuys" element={<DeleteBuys/>}/>
         <Route exact path="/Buys" element={<BuysList/>}/>
         <Route exact path="/ProductList" element={<List/>}/>
+        <Route exact path="/Login" element={<Login/>}/>
       </Routes>
       </Router>
       
