@@ -75,6 +75,7 @@ export default function AddVehicle() {
             name="brand"
             value={brand}
             onChange={(e) => onInputChange(e)}
+            required="true"
           />
         </div>
 
