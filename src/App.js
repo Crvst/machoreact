@@ -33,6 +33,7 @@ import EditBuys from './buy/EditBuys';
 import DeleteBuys from './buy/DeleteBuys';
 import BuysList from './pages/buyList';
 import Login from './log/login';
+import BranchList from './pages/branchList';
 
 
 function App() {
@@ -73,6 +74,7 @@ function App() {
         <Route exact path="/Buys" element={<BuysList/>}/>
         <Route exact path="/ProductList" element={<List/>}/>
         <Route exact path="/Login" element={<Login/>}/>
+        <Route exact path="/Branch" element={<BranchList/>}/>
       </Routes>
       </Router>
       

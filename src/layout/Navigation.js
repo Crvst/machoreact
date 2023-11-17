@@ -29,8 +29,11 @@ const handleClick = (option) => {
     case 'Compras':
       window.location.href = '/Buys';
       break;
-    default:
-      break;
+
+      case 'Sucursales':
+        window.location.href = '/Branch';
+        break;
+    
   }
 };
 
@@ -57,6 +60,16 @@ export default function Navigation() {
         <a className="add-link nav-link" href="/">
           <img src="logoEmpresa.png" alt="Logo de la empresa" />
         </a>
+      </div>
+      <div>
+        <div className="title_wrapper">
+          <button
+            className="title_activator"
+            onClick={() => handleClick('Sucursales')}
+          >
+            Sucursales
+          </button>
+        </div>
       </div>
       <div>
         <Dropdown dropdownTitle="Producto" items={items()} />
