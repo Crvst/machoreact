@@ -12,12 +12,14 @@ export default function EditSale() {
 
   const [sale, setSale] = useState({
     code: '',
-    date: '',
-    total: '',
-    discount: '',
+    date: new Date(),
     employeeId: '',
     clientId: '',
-    productId:'',
+    discount: '',
+    subTotal:'',
+    total: '',
+
+
   });
 
   const [products, setProducts] = useState([]);
@@ -40,7 +42,7 @@ export default function EditSale() {
     }
   };
 
-  const { code, date, total, discount, employeeId, clientId, productId } = sale;
+  const { code, date, employeeId, clientId, discount, subTotal, total } = sale;
 
   const onInputChange = (e) => {
     setSale({ ...sale, [e.target.name]: e.target.value });
@@ -53,21 +55,46 @@ export default function EditSale() {
     loadClients();
   }, []);
 
+  const calculateTotal = () => {
+    const selectedProducts = products.filter((product) =>
+      productosSeleccionados.includes(product.id)
+    );
+    const subtotalAmount = selectedProducts.reduce(
+      (subtotal, product) => subtotal + product.price,
+      0
+    );
+    const discountAmount = parseFloat(discount) || 0;
+    const totalAmount = subtotalAmount - discountAmount;
+    return {
+      subtotal: subtotalAmount.toFixed(2),
+      total: totalAmount.toFixed(2),
+    };
+  };
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear().toString().slice(-4);
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
-
+      const calculatedTotal = calculateTotal();
     const saleData = {
       code: parseInt(code),
-      date: date,
-      total: parseFloat(total),
-      discount: parseFloat(discount),
+      date: formatDate(date),
       employeeId: parseInt(employeeId),
       clientId: parseInt(clientId),
-      productId: parseInt(productId),
+      discount: parseFloat(discount),
+      subTotal: parseFloat(calculatedTotal.subtotal),
+      total: parseFloat(calculatedTotal.total),
+
     };
-
-    await axios.put(`https://localhost:7070/api/Sales/${id}`, saleData);
-
+    console.log(saleData)
+    const resp=await axios.put(`https://localhost:7070/api/Sales/${id}`, saleData);
+console.log(resp);
     // Recorrer los productos seleccionados y actualizar la tabla de SaleProducts
     for (const productId of productosSeleccionados) {
       const saleProductData = {
@@ -95,6 +122,8 @@ export default function EditSale() {
       // Obtener información de los productos asociados a la venta
       const productsResult = await axios.get(`https://localhost:7070/api/SaleProducts/${id}/products`);
       setProductsL(productsResult.data);
+      handleSeleccionProducto(productsResult.data.id);
+      
       const response = await axios.get('https://localhost:7070/api/Products');
       setProducts(response.data);
     } catch (error) {
@@ -133,10 +162,9 @@ export default function EditSale() {
             <input
               type={'number'}
               className="form-control"
-              placeholder="Ingresa el código"
+              placeholder="Código"
               name="code"
               value={code}
-              onChange={(e) => onInputChange(e)}
             />
           </div>
           <div className="form-group">
@@ -149,40 +177,15 @@ export default function EditSale() {
               onChange={(e) => onInputChange(e)}
             />
           </div>
-
-          <div className="form-group">
-            <label className="form-label">Total</label>
-            <input
-              type={'number'}
-              className="form-control"
-              placeholder="Ingresa el total"
-              name="total"
-              value={total}
-              onChange={(e) => onInputChange(e)}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Descuento</label>
-            <input
-              type={'number'}
-              className="form-control"
-              placeholder="Ingresa el descuento"
-              name="discount"
-              value={discount}
-              onChange={(e) => onInputChange(e)}
-            />
-          </div>
-
           <div className="form-group">
             <label className="form-label">Empleado</label>
             <select
               className="form-control"
               name="employeeId"
               value={employeeId}
-              onChange={(e) => onInputChange(e)}
+
             >
-              <option value="">Selecciona un empleado</option>
+              <option value="">Empleado</option>
               {employees.map((employee) => (
                 <option key={employee.id} value={employee.id}>
                   {employee.name}
@@ -197,9 +200,9 @@ export default function EditSale() {
               className="form-control"
               name="clientId"
               value={clientId}
-              onChange={(e) => onInputChange(e)}
+
             >
-              <option value="">Selecciona un cliente</option>
+              <option value="">Cliente</option>
               {clients.map((client) => (
                 <option key={client.id} value={client.id}>
                   {client.name}
@@ -207,6 +210,39 @@ export default function EditSale() {
               ))}
             </select>
           </div>
+
+          <div className="form-group">
+            <label className="form-label">Descuento</label>
+            <input
+              type={'number'}
+              className="form-control"
+              placeholder="Ingresa el descuento"
+              name="discount"
+              value={discount}
+            />
+          </div>
+          <div className="form-group">
+            <label className="form-label">Subtotal</label>
+            <input
+              type={'number'}
+              step="0.01"
+              className="form-control"
+              name="subTotal"
+              value={subTotal}
+              readOnly
+            />
+          </div>
+          <div className="form-group">
+            <label className="form-label">Total</label>
+            <input
+              type={'number'}
+              className="form-control"
+              placeholder="Ingresa el total"
+              name="total"
+              value={total}
+            />
+          </div>
+
           <div className="view-row">
           <label className="view-label">Productos:</label>
           <div className='view-container'>

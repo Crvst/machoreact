@@ -58,7 +58,6 @@ export default function SaleList() {
 
   return (
     <div className="table-container">
-      <h1>.</h1>
       <h1>Ventas</h1>
       <table className="table">
         <thead className="table-header">
@@ -68,6 +67,7 @@ export default function SaleList() {
             <th>Fecha</th>
             <th>Total</th>
             <th>Descuento</th>
+            <th>Subtotal</th>
             <th>Empleado</th>
             <th>Cliente</th>
             <th>Acciones</th>
@@ -96,6 +96,14 @@ export default function SaleList() {
                     })
                   : '')}
               </td>
+              <td>
+                {(formattedPrice = sale.subTotal
+                  ? sale.subTotal.toLocaleString('es-CR', {
+                      style: 'currency',
+                      currency: 'CRC',
+                    })
+                  : '')}
+              </td>
               <td>{getEmployeeNameById(sale.employeeId)}</td>
               <td>{getClientNameById(sale.clientId)}</td>
               <td className="actions">
@@ -118,10 +126,11 @@ export default function SaleList() {
           ))}
         </tbody>
       </table>
-      <a href="/AddSale" className="btn-flotante">
+      <Link to="/AddSale" className="btn-flotante">
         +
-      </a>
+      </Link>
       <Footer />
     </div>
   );
 }
+

@@ -5,8 +5,8 @@ import './view.css';
 export default function ShowSale() {
   const [sale, setSale] = useState({});
   const [products, setProducts] = useState([]);
-  const [clientName, setClientName] = useState('');
-  const [employeeName, setEmployeeName] = useState('');
+  const [client, setClient] = useState({});
+  const [employee, setEmployee] = useState({});
 
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
@@ -24,11 +24,11 @@ export default function ShowSale() {
 
         // Obtener información del cliente
         const clientResult = await axios.get(`https://localhost:7070/api/Clients/${saleResult.data.clientId}`);
-        setClientName(clientResult.data);
+        setClient(clientResult.data);
 
         // Obtener información del empleado
         const employeeResult = await axios.get(`https://localhost:7070/api/Employees/${saleResult.data.employeeId}`);
-        setEmployeeName(employeeResult.data.name);
+        setEmployee(employeeResult.data);
       } catch (error) {
         console.error('Error al cargar la venta:', error);
       }
@@ -57,21 +57,25 @@ export default function ShowSale() {
           <label className="view-value">{sale.discount}</label>
         </div>
         <div className="view-row">
+          <label className="view-label">Subtotal:</label>
+          <label className="view-value">{sale.subTotal}</label>
+        </div>
+        <div className="view-row">
           <label className="view-label">Empleado:</label>
-          <label className="view-value">{employeeName}</label>
+          <label className="view-value">{employee.name}</label>
         </div>
         <div className="view-row">
           <label className="view-label">Cliente:</label>
-          <label className="view-value">{clientName.name} {clientName.lastName}</label>
+          <label className="view-value">{client.name} {client.lastName}</label>
         </div>
         <div className="view-row">
           <label className="view-label">Productos:</label>
           <div className='view-container'>
-          <ul>
-            {products.map((product) => (
-              <li key={product.id}>{product.name} Precio {product.price}</li>
-            ))}
-          </ul>
+            <ul>
+              {products.map((product) => (
+                <li key={product.id}>{product.name} Precio {product.price}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
