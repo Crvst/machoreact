@@ -33,6 +33,9 @@ const handleClick = (option) => {
       case 'Sucursales':
         window.location.href = '/Branch';
         break;
+      case 'Empleados':
+        window.location.href = '/Employee';
+        break;
     
   }
 };
@@ -72,7 +75,17 @@ export default function Navigation() {
         </div>
       </div>
       <div>
-        <Dropdown dropdownTitle="Producto" items={items()} />
+        <div className="title_wrapper">
+          <button
+            className="title_activator"
+            onClick={() => handleClick('Empleados')}
+          >
+            Empleados
+          </button>
+        </div>
+      </div>
+      <div>
+        <Dropdown dropdownTitle="Productos" items={items()} />
       </div>
       <div>
         <div className="title_wrapper">
@@ -114,6 +127,7 @@ export default function Navigation() {
           </button>
         </div>
       </div>
+      
     </nav>
   );
 }

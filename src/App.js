@@ -38,6 +38,11 @@ import AddBranches from './branch/AddBranch';
 import DeleteBranch from './branch/DeleteBranch';
 import EditBranch from './branch/EditBranch';
 import ShowBranch from './branch/ShowBranch';
+import EmployeeList from './pages/employeeList';
+import AddEmployee from './employee/AddEmployee';
+import DeleteEmployee from './employee/DeleteEmployee';
+import EditEmployee from './employee/EditEmployee';
+import ShowEmployee from './employee/ShowEmployee';
 
 
 function App() {
@@ -83,6 +88,11 @@ function App() {
         <Route exact path="/DeleteBranch" element={<DeleteBranch/>}/>
         <Route exact path="/EditBranch" element={<EditBranch/>}/>
         <Route exact path="/ShowBranch" element={<ShowBranch/>}/>
+        <Route exact path="/Employee" element={<EmployeeList/>}/>
+        <Route exact path="/AddEmployee" element={<AddEmployee/>}/>
+        <Route exact path="/DeleteEmployee" element={<DeleteEmployee/>}/>
+        <Route exact path="/EditEmployee" element={<EditEmployee/>}/>
+        <Route exact path="/ShowEmployee" element={<ShowEmployee/>}/>
 
       </Routes>
       </Router>
