@@ -35,6 +35,9 @@ import BuysList from './pages/buyList';
 import Login from './log/login';
 import BranchList from './pages/branchList';
 import AddBranches from './branch/AddBranch';
+import DeleteBranch from './branch/DeleteBranch';
+import EditBranch from './branch/EditBranch';
+import ShowBranch from './branch/ShowBranch';
 
 
 function App() {
@@ -77,6 +80,10 @@ function App() {
         <Route exact path="/Login" element={<Login/>}/>
         <Route exact path="/Branch" element={<BranchList/>}/>
         <Route exact path="/AddBranch" element={<AddBranches/>}/>
+        <Route exact path="/DeleteBranch" element={<DeleteBranch/>}/>
+        <Route exact path="/EditBranch" element={<EditBranch/>}/>
+        <Route exact path="/ShowBranch" element={<ShowBranch/>}/>
+
       </Routes>
       </Router>
       

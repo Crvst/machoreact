@@ -31,11 +31,11 @@ export default function AddBranches() {
     <div>
       <link rel="stylesheet" href="/globalForm.css"></link>
     <div className='container'>
-      <h2 className='heading'>Register Branch</h2>
+      <h2 className='heading'>Registrar Sucursal</h2>
 
       <form onSubmit={(e) => onSubmit(e)}>
         <div className='form-group'>
-          <label className='form-label'>Name</label>
+          <label className='form-label'>Nombre</label>
           <input
             type='text'
             className='form-control'
@@ -47,7 +47,7 @@ export default function AddBranches() {
         </div>
 
         <div className='form-group'>
-          <label className='form-label'>Address</label>
+          <label className='form-label'>Dirección</label>
           <input
             type='text'
             className='form-control'
@@ -59,11 +59,11 @@ export default function AddBranches() {
         </div>
 
         <div className='form-group'>
-          <label className='form-label'>Phone</label>
+          <label className='form-label'>Teléfono</label>
           <input
             type='tel'
             className='form-control'
-            placeholder='Enter phone number'
+            placeholder='Ingresa el número de teléfono'
             name='phone'
             value={phone}
             onChange={(e) => onInputChange(e)}
@@ -83,7 +83,7 @@ export default function AddBranches() {
         </div>
 
         <div className='form-group'>
-          <label className='form-label'>Hours</label>
+          <label className='form-label'>Horario</label>
           <input
             type='text'
             className='form-control'

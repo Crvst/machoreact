@@ -33,7 +33,7 @@ export default function AddWarranty() {
     <div>
       <link rel="stylesheet" href="/globalForm.css"></link>
     <div className="container">
-      <h1 className="heading">Registrar Producto</h1>
+      <h1 className="heading">Registrar Garantía</h1>
 
       <form onSubmit={(e) => onSubmit(e)}>
         <div className="form-group">

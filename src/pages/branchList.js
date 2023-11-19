@@ -2,6 +2,7 @@ import Footer from './footer';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './styles.css';
+import DeleteBranch from '../branch/DeleteBranch';
 import { Link } from 'react-router-dom';
 
 export default function BranchList() {
@@ -59,11 +60,13 @@ export default function BranchList() {
                     Editar
                   </Link>
                   <Link
-                    className="actions-link"
-                    to={`DeleteBranch?id=${branch.id}`}
-                  >
-                    Eliminar
-                  </Link>
+                  className="actions-link "
+                  onClick={() => {
+                    DeleteBranch(branch.id,loadBranches);
+                  }}
+                >
+                  Eliminar
+                </Link>
                 </td>
               </tr>
             ))}
