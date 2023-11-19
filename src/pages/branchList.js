@@ -32,7 +32,7 @@ export default function BranchList() {
               <th>Nombre</th>
               <th>Dirección</th>
               <th>Teléfono</th>
-              <th>Email</th>
+              <th>Correo Electrónico</th>
               <th>Horario</th>
               <th>Acciones</th>
             </tr>

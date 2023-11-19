@@ -33,7 +33,7 @@ export default function EmployeeList() {
             <th>Nombre</th>
             <th>Dirección</th>
             <th>Teléfono</th>
-            <th>Email</th>
+            <th>Correo Electrónico</th>
             <th>Acciones</th>
           </tr>
         </thead>

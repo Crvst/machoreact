@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export default function EditBranch() {
   let navigate = useNavigate();
@@ -28,8 +29,71 @@ export default function EditBranch() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.put(`https://localhost:7070/api/Branches/${id}`, branch);
-    navigate('/Branch');
+
+    // Validaciones
+    if (
+      !name ||
+      !address ||
+      !phone ||
+      !email ||
+      !hours
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Error.",
+        text: "Todos los campos son obligatorios. Por favor, llénelos todos.",
+        footer: '<a href="#">Why do I have this issue?</a>'
+      });
+      return;
+    }
+
+    if (!/^[a-zA-Z\s]+$/.test(name)) {
+      Swal.fire({
+        icon: "error",
+        title: "Error.",
+        text: "El nombre no debe contener números.",
+        footer: '<a href="#">Why do I have this issue?</a>'
+      });
+      return;
+    }
+
+    if (!/^\d{8}$/.test(phone)) {
+      Swal.fire({
+        icon: "error",
+        title: "Error.",
+        text: "El teléfono debe tener 8 dígitos numéricos.",
+        footer: '<a href="#">Why do I have this issue?</a>'
+      });
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      Swal.fire({
+        icon: "error",
+        title: "Error.",
+        text: "El correo electrónico no tiene un formato válido.",
+        footer: '<a href="#">Why do I have this issue?</a>'
+      });
+      return;
+    }
+
+    Swal.fire({
+      title: "¿Desea guardar los cambios?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Guardar",
+      denyButtonText: `No guardar`,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Guardado.", "", "success");
+        await axios.put(`https://localhost:7070/api/Branches/${id}`, branch);
+        navigate('/Branch');
+      } else if (result.isDenied) {
+        Swal.fire("Los cambios no fueron guardados.", "", "info");
+        return;
+      }
+    });
+
   };
 
   const loadBranch = async () => {
@@ -83,7 +147,6 @@ export default function EditBranch() {
           <div className="form-group">
             <label className="form-label">Correo Electrónico</label>
             <input
-              type={'email'}
               className="form-control"
               placeholder="Ingresa el correo electrónico"
               name="email"
@@ -92,16 +155,21 @@ export default function EditBranch() {
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Horario</label>
-            <input
-              type={'text'}
-              className="form-control"
-              placeholder="Ingresa el horario"
-              name="hours"
+          <div className='form-group'>
+            <label className='form-label'>Horario</label>
+            <select
+              className='form-control'
+              name='hours'
               value={hours}
               onChange={(e) => onInputChange(e)}
-            />
+            >
+              <option value='' disabled>
+                Selecciona un horario
+              </option>
+              <option value='9:00 AM - 5:00 PM'>9:00 AM - 5:00 PM</option>
+              <option value='10:00 AM - 6:00 PM'>10:00 AM - 6:00 PM</option>
+              {/* Agrega más opciones según tus necesidades */}
+            </select>
           </div>
 
           <button className="submit-button" type="submit">
