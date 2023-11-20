@@ -20,8 +20,6 @@ export default function AddSale() {
   const [employees, setEmployees] = useState([]);
   const [clients, setClients] = useState([]);
   const salep = [];
-
-  // Estado para almacenar productos seleccionados
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
 
   const handleSeleccionProducto = (id) => {
@@ -93,8 +91,7 @@ export default function AddSale() {
 
       };
       console.log(saleData)
-      const response = await axios.post('https://localhost:7070/api/Sales',saleData
-      );
+      const response = await axios.post('https://localhost:7070/api/Sales',saleData );
 
       const saleId = response.data.id;
 
