@@ -8,13 +8,14 @@ export default function AddSale() {
 
   const [sale, setSale] = useState({
     code: '',
-    date: '',
-    total: '', // Modificar el tipo de dato a number
-    discount: '',
+    date: new Date(),
     employeeId: '',
     clientId: '',
-    productId: '',
+    discount: '',
+    subTotal: '',
+    total: '',
   });
+
   const [products, setProducts] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [clients, setClients] = useState([]);
@@ -34,7 +35,7 @@ export default function AddSale() {
     }
   };
 
-  const { code, date, total, discount, employeeId, clientId, productId } = sale;
+  const { code, date, employeeId, clientId, discount, subTotal, total } = sale;
 
   const onInputChange = (e) => {
     setSale({ ...sale, [e.target.name]: e.target.value });
@@ -47,56 +48,73 @@ export default function AddSale() {
     const day = d.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
+
   // Calcular el total sumando los precios de los productos seleccionados
   const calculateTotal = () => {
     const selectedProducts = products.filter((product) =>
       productosSeleccionados.includes(product.id)
     );
-    const totalAmount = selectedProducts.reduce(
-      (total, product) => total + product.price,
+    const subtotalAmount = selectedProducts.reduce(
+      (subtotal, product) => subtotal + product.price,
       0
     );
-    return totalAmount.toFixed(2);
+
+    // Obtener el descuento del estado
+    const discountAmount = parseFloat(discount) || 0;
+
+    // Calcular el total restando el descuento al subtotal
+    const totalAmount = subtotalAmount - discountAmount;
+
+    return {
+      subtotal: subtotalAmount.toFixed(2),
+      total: totalAmount.toFixed(2),
+    };
   };
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+    if (!code || !date || !employeeId || !clientId || !discount || !productosSeleccionados.length) {
+      console.error('Por favor, complete todos los campos necesarios.');
+      Swal.fire('No puede dejar espacios vacios', 'success');
+    } else {
+      e.preventDefault();
+      // Calcular el total
+      const calculatedTotal = calculateTotal();
 
-    // Calcular el total
-    const calculatedTotal = calculateTotal();
 
-    const saleData = {
-      code: parseInt(code),
-      date: formatDate(date),
-      total: parseFloat(calculatedTotal), // Usar el total calculado
-      discount: parseFloat(discount),
-      employeeId: parseInt(employeeId),
-      clientId: parseInt(clientId),
-      productId: parseInt(productId),
-    };
+      const saleData = {
+        code: parseInt(code),
+        date: formatDate(date),
+        employeeId: parseInt(employeeId),
+        clientId: parseInt(clientId),
+        discount: parseFloat(discount),
+        subTotal: parseFloat(calculatedTotal.subtotal),
+        total: parseFloat(calculatedTotal.total),
 
-    const response = await axios.post(
-      'https://localhost:7070/api/Sales',
-      saleData
-    );
-
-    const saleId = response.data.id;
-
-    // Recorrer los productos seleccionados y agregarlos a la tabla de SaleProducts
-    for (const productId of productosSeleccionados) {
-      const saleProductData = {
-        saleId: saleId,
-        productId: productId,
       };
-
-      await axios.post(
-        'https://localhost:7070/api/SaleProducts',
-        saleProductData
+      console.log(saleData)
+      const response = await axios.post('https://localhost:7070/api/Sales',saleData
       );
+
+      const saleId = response.data.id;
+
+      // Recorrer los productos seleccionados y agregarlos a la tabla de SaleProducts
+      for (const productId of productosSeleccionados) {
+        const saleProductData = {
+          saleId: saleId,
+          productId: productId,
+        };
+
+        await axios.post(
+          'https://localhost:7070/api/SaleProducts',
+          saleProductData
+        );
+      }
+
+      navigate('/Sales');
+      Swal.fire('Venta Agregado!', 'La venta se almacenó con éxito!', 'success');
     }
 
-    navigate('/Sales');
-    Swal.fire('Venta Agregado!', 'La venta se almacenó con éxito!', 'success');
   };
 
   useEffect(() => {
@@ -157,34 +175,7 @@ export default function AddSale() {
               className="form-control"
               placeholder="Ingresa la fecha"
               name="date"
-              value={date}
-              onChange={(e) => onInputChange(e)}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Total</label>
-            <input
-              type={'number'}
-              step="0.01"
-              className="form-control"
-              placeholder="Ingresa el total"
-              name="total"
-              value={calculateTotal()} // Usar el total calculado
-              onChange={(e) => onInputChange(e)} // Permitir que el usuario lo edite si es necesario
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Descuento</label>
-            <input
-              type={'number'}
-              step="0.01"
-              className="form-control"
-              placeholder="Ingresa el descuento"
-              name="discount"
-              value={discount}
-              onChange={(e) => onInputChange(e)}
+              value={new Date().toISOString().split('T')[0]}
             />
           </div>
 
@@ -220,6 +211,45 @@ export default function AddSale() {
                 </option>
               ))}
             </select>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Descuento</label>
+            <input
+              type={'number'}
+              step="0.01"
+              className="form-control"
+              placeholder="Ingresa el descuento"
+              name="discount"
+              value={discount}
+              onChange={(e) => onInputChange(e)}
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Subtotal</label>
+            <input
+              type={'number'}
+              step="0.01"
+              className="form-control"
+              name="subTotal"
+              value={calculateTotal().subtotal}
+              readOnly
+            />
+          </div>
+
+
+          <div className="form-group">
+            <label className="form-label">Total</label>
+            <input
+              type={'number'}
+              step="0.01"
+              className="form-control"
+              placeholder="Ingresa el total"
+              name="total"
+              value={calculateTotal().total} // Usar el total calculado
+              onChange={(e) => onInputChange(e)} // Permitir que el usuario lo edite si es necesario
+            />
           </div>
 
           <div className="form-group">

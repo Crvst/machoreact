@@ -37,10 +37,12 @@ const Navigation = () => {
       case 'LogOut':
         logout();
         window.location.href = '/';
-
         break;
       case 'Sucursales':
         window.location.href = '/Branch';
+        break;
+      case 'Empleados':
+        window.location.href = '/Employee';
         break;
       default:
         // Manejar otros casos si es necesario
@@ -62,7 +64,7 @@ const Navigation = () => {
   }, []);
 
   return (
-    <nav className="navMenu">
+    <nav className={`navMenu ${isScrolled ? 'scrolled' : ''}`}>
       <div className="company-logo">
         <a className="add-link nav-link" href="/MainSection">
           <img src="logoEmpresa.png" alt="Logo de la empresa" />
@@ -79,7 +81,17 @@ const Navigation = () => {
         </div>
       </div>
       <div>
-        <Dropdown dropdownTitle="Producto" items={items()} />
+        <div className="title_wrapper">
+          <button
+            className="title_activator"
+            onClick={() => handleClick('Empleados')}
+          >
+            Empleados
+          </button>
+        </div>
+      </div>
+      <div>
+        <Dropdown dropdownTitle="Productos" items={items()} />
       </div>
       <div>
         <div className="title_wrapper">
