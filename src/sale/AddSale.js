@@ -56,18 +56,16 @@ export default function AddSale() {
       (subtotal, product) => subtotal + product.price,
       0
     );
-
-    // Obtener el descuento del estado
-    const discountAmount = parseFloat(discount) || 0;
-
-    // Calcular el total restando el descuento al subtotal
+    const discountPercentage = parseFloat(discount) || 0;
+    const discountAmount = (subtotalAmount * discountPercentage) / 100;
     const totalAmount = subtotalAmount - discountAmount;
-
+  
     return {
       subtotal: subtotalAmount.toFixed(2),
       total: totalAmount.toFixed(2),
     };
   };
+  
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
   const onSubmit = async (e) => {
@@ -102,10 +100,7 @@ export default function AddSale() {
           productId: productId,
         };
 
-        await axios.post(
-          'https://localhost:7070/api/SaleProducts',
-          saleProductData
-        );
+        await axios.post('https://localhost:7070/api/SaleProducts',saleProductData);
       }
 
       navigate('/Sales');

@@ -4,6 +4,7 @@ import './styles.css';
 import { Link } from 'react-router-dom';
 
 import Footer from './footer';
+import DeleteBuys from '../buy/DeleteBuys';
 
 export default function BuyList() {
   const [buys, setBuys] = useState([]);
@@ -78,13 +79,10 @@ export default function BuyList() {
         <thead className="table-header">
           <tr>
             <th>#</th>
-            <th>ID</th>
             <th>Fecha</th>
-            <th>Cantidad</th>
-            <th>Total</th>
             <th>Proveedor</th>
             <th>Empleado</th>
-            <th>Producto</th>
+            <th>Total</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -92,9 +90,9 @@ export default function BuyList() {
           {buys.map((buy, index) => (
             <tr key={buy.id}>
               <th scope="row">{index + 1}</th>
-              <td>{buy.id}</td>
               <td>{buy.date.split('T')[0]}</td>
-              <td>{buy.amount}</td>
+              <td>{getSupplierNameById(buy.supplierId)}</td>
+              <td>{getEmployeeNameById(buy.employeeId)}</td>
               <td>
                 {(formattedPrice = buy.total
                   ? buy.total.toLocaleString('es-CR', {
@@ -103,9 +101,7 @@ export default function BuyList() {
                     })
                   : '')}
               </td>
-              <td>{getSupplierNameById(buy.supplierId)}</td>
-              <td>{getEmployeeNameById(buy.employeeId)}</td>
-              <td>{getProductNameById(buy.productId)}</td>
+
               <td className="actions">
                 <Link className="actions-link" to={`/ShowBuys?id=${buy.id}`}>
                   Ver
@@ -114,8 +110,10 @@ export default function BuyList() {
                   Editar
                 </Link>
                 <Link
-                  className="actions-link"
-                  to={`DeleteBuys?id=${buy.id}`}
+                  className="actions-link "
+                  onClick={() => {
+                    DeleteBuys(buy.id, loadBuys);
+                  }}
                 >
                   Eliminar
                 </Link>

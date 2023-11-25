@@ -6,7 +6,7 @@ export default function ShowBuys() {
   const [buys, setBuys] = useState({});
   const [supplierName, setSupplierName] = useState('');
   const [employeeName, setEmployeeName] = useState('');
-  const [productName, setProductName] = useState('');
+  const [productName, setProductName] = useState([]);
 
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
@@ -27,8 +27,8 @@ export default function ShowBuys() {
         setEmployeeName(employeeResult.data.name);
 
         // Obtener información del producto
-        const productResult = await axios.get(`https://localhost:7070/api/Products/${result.data.productId}`);
-        setProductName(productResult.data.name);
+        const productResult = await axios.get(`https://localhost:7070/api/BuysProducts/${id}/products`);
+        setProductName(productResult.data);
       } catch (error) {
         console.error('Error al cargar la compra:', error);
       }
@@ -45,14 +45,6 @@ export default function ShowBuys() {
           <label className="view-value">{buys.date}</label>
         </div>
         <div className="view-row">
-          <label className="view-label">Cantidad:</label>
-          <label className="view-value">{buys.amount}</label>
-        </div>
-        <div className="view-row">
-          <label className="view-label">Total:</label>
-          <label className="view-value">{buys.total}</label>
-        </div>
-        <div className="view-row">
           <label className="view-label">Proveedor:</label>
           <label className="view-value">{supplierName}</label>
         </div>
@@ -61,8 +53,18 @@ export default function ShowBuys() {
           <label className="view-value">{employeeName}</label>
         </div>
         <div className="view-row">
-          <label className="view-label">Producto:</label>
-          <label className="view-value">{productName}</label>
+          <label className="view-label">Total:</label>
+          <label className="view-value">{buys.total}</label>
+        </div>
+        <div className="view-row">
+          <label className="view-label">Productos:</label>
+          <div className='view-container'>
+            <ul>
+              {productName.map((product) => (
+                <li key={product.id}>{product.name} Precio {product.price}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

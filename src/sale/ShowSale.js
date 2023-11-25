@@ -10,6 +10,13 @@ export default function ShowSale() {
 
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
+  const formDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear().toString().slice(-2);
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    return `${day}-${month}-${year}`;
+  };
 
   useEffect(() => {
     const loadSale = async () => {
@@ -46,7 +53,7 @@ export default function ShowSale() {
         </div>
         <div className="view-row">
           <label className="view-label">Fecha:</label>
-          <label className="view-value">{sale.date}</label>
+          <label className="view-value">{formDate(sale.date)}</label>
         </div>
         <div className="view-row">
           <label className="view-label">Total:</label>

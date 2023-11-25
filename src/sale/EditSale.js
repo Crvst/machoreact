@@ -11,6 +11,7 @@ export default function EditSale() {
 
 
   const [sale, setSale] = useState({
+    id:id,
     code: '',
     date: new Date(),
     employeeId: '',
@@ -78,11 +79,19 @@ export default function EditSale() {
     const day = d.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
+  const formDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear().toString().slice(-2);
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    return `${day}-${month}-${year}`;
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
       const calculatedTotal = calculateTotal();
     const saleData = {
+      id:parseInt(id),
       code: parseInt(code),
       date: formatDate(date),
       employeeId: parseInt(employeeId),
@@ -94,18 +103,15 @@ export default function EditSale() {
     };
     console.log(saleData)
     const resp=await axios.put(`https://localhost:7070/api/Sales/${id}`, saleData);
-console.log(resp);
+
     // Recorrer los productos seleccionados y actualizar la tabla de SaleProducts
     for (const productId of productosSeleccionados) {
       const saleProductData = {
-        saleId: id,
+        saleId: parseInt(id),
         productId: productId,
       };
-
-      await axios.post(
-        'https://localhost:7070/api/SaleProducts',
-        saleProductData
-      );
+      console.log(saleProductData);
+      await axios.post('https://localhost:7070/api/SaleProducts',saleProductData);
     }
 
     navigate('/Sales');
@@ -122,8 +128,9 @@ console.log(resp);
       // Obtener información de los productos asociados a la venta
       const productsResult = await axios.get(`https://localhost:7070/api/SaleProducts/${id}/products`);
       setProductsL(productsResult.data);
-      handleSeleccionProducto(productsResult.data.id);
-      
+
+
+
       const response = await axios.get('https://localhost:7070/api/Products');
       setProducts(response.data);
     } catch (error) {
@@ -135,6 +142,7 @@ console.log(resp);
     try {
       const response = await axios.get('https://localhost:7070/api/Employees');
       setEmployees(response.data);
+    
     } catch (error) {
       console.error('Error al cargar los empleados:', error);
     }
@@ -173,7 +181,7 @@ console.log(resp);
               type={'date'}
               className="form-control"
               name="date"
-              value={date}
+              value={new Date().toISOString().split('T')[0]}
               onChange={(e) => onInputChange(e)}
             />
           </div>

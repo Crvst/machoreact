@@ -65,11 +65,11 @@ export default function SaleList() {
             <th>#</th>
             <th>Código</th>
             <th>Fecha</th>
-            <th>Total</th>
-            <th>Descuento</th>
-            <th>Subtotal</th>
             <th>Empleado</th>
             <th>Cliente</th>
+            <th>Descuento</th>
+            <th>Subtotal</th>
+            <th>Total</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -80,14 +80,8 @@ export default function SaleList() {
               <td style={{ display: 'none' }}>{sale.id}</td>
               <td>{sale.code}</td>
               <td>{sale.date.split('T')[0]}</td>
-              <td>
-                {(formattedPrice = sale.total
-                  ? sale.total.toLocaleString('es-CR', {
-                      style: 'currency',
-                      currency: 'CRC',
-                    })
-                  : '')}
-              </td>
+              <td>{getEmployeeNameById(sale.employeeId)}</td>
+              <td>{getClientNameById(sale.clientId)}</td>
               <td>
                 {(formattedPrice = sale.discount
                   ? sale.discount.toLocaleString('es-CR', {
@@ -104,8 +98,14 @@ export default function SaleList() {
                     })
                   : '')}
               </td>
-              <td>{getEmployeeNameById(sale.employeeId)}</td>
-              <td>{getClientNameById(sale.clientId)}</td>
+              <td>
+                {(formattedPrice = sale.total
+                  ? sale.total.toLocaleString('es-CR', {
+                      style: 'currency',
+                      currency: 'CRC',
+                    })
+                  : '')}
+              </td>
               <td className="actions">
                 <Link className="actions-link" to={`/ShowSale?id=${sale.id}`}>
                   Ver
