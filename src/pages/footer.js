@@ -4,7 +4,7 @@ import './Footer.css'; // Importa tus estilos aquí
 
 const Footer = () => {
   return (
-    <footer>
+    <footer className='footer'>
       <p>© 2023 Macho Baterías. Todos los derechos reservados.</p>
     </footer>
   );

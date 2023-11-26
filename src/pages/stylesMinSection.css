@@ -1,6 +1,7 @@
 /* Estilo para el h2 normal y párrafos en section */
 section {
-  padding-top: 80px; /* Ajusta la altura según el grosor de tu barra de navegación */
+  padding-top: 40px; /* Ajusta la altura según el grosor de tu barra de navegación */
+  padding-bottom: 50px;
 }
 
 /* Estilo para el h2 normal */
