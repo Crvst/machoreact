@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import formAlert from '../alerts/formAlert';
 
 export default function AddEmployee() {
   let navigate = useNavigate();
@@ -43,62 +44,32 @@ export default function AddEmployee() {
       !password ||
       !confirmPassword
     ) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "Todos los campos son obligatorios. Por favor, llénelos todos.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      formAlert('Todos los campos son obligatorios.');
       return;
     }
 
     if (!/^\d{9}$/.test(identification)) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "El cédula debe tener 9 dígitos numéricos.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      formAlert('La cédula debe tener 9 dígitos numéricos.');
       return;
     }
 
     if (!/^[a-zA-Z\s]+$/.test(name)) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "El nombre no debe contener números.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      formAlert('El nombre debe contener solo letras.');
       return;
     }
 
     if (!/^\d{8}$/.test(phone)) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "El teléfono debe tener 8 dígitos numéricos.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      formAlert('El teléfono debe tener 8 dígitos numéricos.');
       return;
     }
 
     if (!/\S+@\S+\.\S+/.test(email)) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "El correo electrónico no tiene un formato válido.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      formAlert('El correo electrónico no es válido.');
       return;
     }
 
     if (password !== confirmPassword) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "Las contraseña no coinciden. Por favor, verifique que sean iguales.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      formAlert('Las contraseñas no coinciden.');
       return;
     }
 
