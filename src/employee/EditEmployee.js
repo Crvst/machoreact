@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { formAlert } from '../alerts/alerts';
 
 export default function EditEmployee() {
   let navigate = useNavigate();
@@ -19,112 +20,83 @@ export default function EditEmployee() {
     confirmPassword: ''
   });
 
-  const { identification, name, address, phone, email, password, 
-    confirmPassword,} = employee;
+  const [changePassword, setChangePassword] = useState(false);
+
+  const { identification, name, address, phone, email, password, confirmPassword } = employee;
 
   const onInputChange = (e) => {
     setEmployee({ ...employee, [e.target.name]: e.target.value });
   };
 
+  const toggleChangePassword = () => {
+    setChangePassword(!changePassword);
+  };
+
   useEffect(() => {
     loadEmployee();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
     // Validaciones
-    if (
-      !identification ||
-      !name ||
-      !address ||
-      !phone ||
-      !email ||
-      !password ||
-      !confirmPassword
-    ) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "Todos los campos son obligatorios. Por favor, llénelos todos.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+    if (!identification || !name || !address || !phone || !email) {
+      formAlert('Todos los campos son obligatorios.');
       return;
     }
 
     if (!/^\d{9}$/.test(identification)) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "El cédula debe tener 9 dígitos numéricos.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      formAlert('La cédula debe tener 9 dígitos numéricos.');
       return;
     }
 
     if (!/^[a-zA-Z\s]+$/.test(name)) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "El nombre no debe contener números.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      formAlert('El nombre debe contener solo letras.');
       return;
     }
 
     if (!/^\d{8}$/.test(phone)) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "El teléfono debe tener 8 dígitos numéricos.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      formAlert('El teléfono debe tener 8 dígitos numéricos.');
       return;
     }
 
     if (!/\S+@\S+\.\S+/.test(email)) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "El correo electrónico no tiene un formato válido.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      formAlert('El correo electrónico no es válido.');
       return;
     }
 
-    if (password !== confirmPassword) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "Las contraseña no coinciden. Por favor, verifique que sean iguales.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+    if (changePassword && password !== confirmPassword) {
+      formAlert('Las contraseñas no coinciden.');
       return;
     }
-
 
     Swal.fire({
-      title: "¿Desea guardar los cambios?",
+      title: '¿Desea guardar los cambios?',
       showDenyButton: true,
       showCancelButton: true,
-      confirmButtonText: "Guardar",
-      denyButtonText: `No guardar`,
+      confirmButtonText: 'Guardar',
+      denyButtonText: 'No guardar',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        Swal.fire("Guardado.", "", "success");
-        await axios.put(`https://localhost:7070/api/Employees/${id}`, employee);
-        navigate('/Employee'); // Update the route to match your application's routing
+        Swal.fire('Guardado.', '', 'success');
+        const updatedEmployee = { ...employee };
+        // Eliminar las propiedades de contraseña si no se están cambiando
+        if (!changePassword) {
+          delete updatedEmployee.password;
+          delete updatedEmployee.confirmPassword;
+        }
+        await axios.put(`https://localhost:7070/api/Employees/${id}`, updatedEmployee);
+        navigate('/Employee'); // Actualizar la ruta según la configuración de enrutamiento de tu aplicación
       } else if (result.isDenied) {
-        Swal.fire("Los cambios no fueron guardados.", "", "info");
+        Swal.fire('Los cambios no fueron guardados.', '', 'info');
         return;
       }
     });
   };
 
   const loadEmployee = async () => {
-    const result = await axios.get(
-      `https://localhost:7070/api/Employees/${id}`
-    );
+    const result = await axios.get(`https://localhost:7070/api/Employees/${id}`);
 
     const employeeData = result.data;
 
@@ -198,30 +170,37 @@ export default function EditEmployee() {
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Contraseña</label>
-            <input
-              type={'password'}
-              className="form-control"
-              placeholder="Ingresa la contraseña"
-              name="password"
-              value={password}
-              onChange={(e) => onInputChange(e)}
-            />
-          </div>
-          
+          <button type="button" onClick={toggleChangePassword}>
+            Cambiar Contraseña
+          </button>
 
-          <div className="form-group">
-            <label className="form-label">Confirmar Contraseña</label>
-            <input
-              type={'password'}
-              className="form-control"
-              placeholder="Confirma la contraseña"
-              name="confirmPassword"
-              value={password}
-              onChange={(e) => onInputChange(e)}
-            />
-          </div>
+          {changePassword && (
+            <>
+              <div className="form-group">
+                <label className="form-label">Contraseña</label>
+                <input
+                  type={'password'}
+                  className="form-control"
+                  placeholder="Ingresa la contraseña"
+                  name="password"
+                  value={password}
+                  onChange={(e) => onInputChange(e)}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Confirmar Contraseña</label>
+                <input
+                  type={'password'}
+                  className="form-control"
+                  placeholder="Confirma la contraseña"
+                  name="confirmPassword"
+                  value={confirmPassword}
+                  onChange={(e) => onInputChange(e)}
+                />
+              </div>
+            </>
+          )}
 
           <button className="submit-button" type="submit">
             Enviar

@@ -109,7 +109,7 @@ export default function EditWarranty() {
               value={state === null ? '' : state}
               onChange={(e) => onInputChange(e)}
             >
-              <option value="">Selecciona un estado</option>
+             
               <option value={true}>Activo</option>
               <option value={false}>Inactivo</option>
             </select>
@@ -159,6 +159,7 @@ export default function EditWarranty() {
               name="startDate"
               value={startDate}
               onChange={(e) => onInputChange(e)}
+              disabled 
             />
           </div>
 
@@ -170,6 +171,7 @@ export default function EditWarranty() {
               name="endDate"
               value={endDate}
               onChange={(e) => onInputChange(e)}
+              disabled 
             />
           </div>
 
