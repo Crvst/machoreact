@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { formAlert } from '../alerts/alerts';
 
 export default function AddBranches() {
   let navigate = useNavigate();
@@ -32,42 +33,22 @@ export default function AddBranches() {
       !email ||
       !hours
     ) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "Todos los campos son obligatorios. Por favor, llénelos todos.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      formAlert('Todos los campos son obligatorios.');
       return;
     }
 
     if (!/^[a-zA-Z\s]+$/.test(name)) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "El nombre no debe contener números.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      formAlert('El nombre debe contener solo letras.');
       return;
     }
 
     if (!/^\d{8}$/.test(phone)) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "El teléfono debe tener 8 dígitos numéricos.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      formAlert('El teléfono debe tener 8 dígitos numéricos.');
       return;
     }
 
     if (!/\S+@\S+\.\S+/.test(email)) {
-      Swal.fire({
-        icon: "error",
-        title: "Error.",
-        text: "El correo electrónico no tiene un formato válido.",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      formAlert('El correo electrónico no es válido.');
       return;
     }
 

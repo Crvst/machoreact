@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 import Swal from 'sweetalert2';
 
 function addAlert() {
@@ -11,7 +11,7 @@ function addAlert() {
       confirmButtonText: 'Aceptar',
       footer: '<link rel="stylesheet" href="/globalAlert.css"></link> ',
       customClass: 'alert-button',
-    })
-  }
+  })
+}
 
   export default addAlert;

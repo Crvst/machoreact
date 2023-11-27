@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import formAlert from '../alerts/formAlert';
+import { formAlert } from '../alerts/alerts';
 
 export default function AddEmployee() {
   let navigate = useNavigate();
@@ -44,7 +44,7 @@ export default function AddEmployee() {
       !password ||
       !confirmPassword
     ) {
-      formAlert('Todos los campos son obligatorios.');
+      formAlert('Mensaje de error');
       return;
     }
 
@@ -75,7 +75,6 @@ export default function AddEmployee() {
 
     // Resto del código para enviar los datos al servidor
 
-    
     Swal.fire({
       title: "¿Desea guardar el nuevo empleado?",
       showDenyButton: true,

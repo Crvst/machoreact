@@ -1,4 +1,4 @@
-import deleteAlert from '../alerts/deleteAlert';
+import { deleteAlert } from '../alerts/alerts';
 
 const DeleteEmployee = (id, updateEmployeeList) => {
 
