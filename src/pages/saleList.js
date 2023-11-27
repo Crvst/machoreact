@@ -58,6 +58,7 @@ export default function SaleList() {
 
   return (
     <div className="table-container">
+       <h1>.</h1>
       <h1>Ventas</h1>
       <table className="table">
         <thead className="table-header">
