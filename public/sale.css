@@ -13,7 +13,7 @@
   }
   
   /* Estilos para el formulario */
-  form {
+  .colums {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 20px;
@@ -60,7 +60,8 @@
   }
   
   /* Estilos para el botón de enviar */
-  .submit-button {
+  .submit-button{
+    display: inline-block;
     background-color: black;
     color: white;
     padding: 5px;
@@ -68,10 +69,16 @@
     border-radius: 2px;
     cursor: pointer;
     font-family: Arial, sans-serif;
+    margin-right: 10px; /* Ajusta el margen entre los botones según tus preferencias */
   }
+
   
   .submit-button:hover {
     background-color: #fddb3a;
     color: black;
   }
+  a{
+    text-decoration: none; /* Quita el subrayado de los enlaces */
+  }
+
   

@@ -14,6 +14,7 @@ export default function AddSale() {
     discount: '',
     subTotal: '',
     total: '',
+    cantidad: '',
   });
 
   const [products, setProducts] = useState([]);
@@ -21,6 +22,7 @@ export default function AddSale() {
   const [clients, setClients] = useState([]);
   const salep = [];
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+  const [cantidades, setCantidades] = useState({});
 
   const handleSeleccionProducto = (id) => {
     const productoYaSeleccionado = productosSeleccionados.includes(id);
@@ -33,7 +35,16 @@ export default function AddSale() {
     }
   };
 
-  const { code, date, employeeId, clientId, discount, subTotal, total } = sale;
+  ///cantidad de los productos
+  const handleCantidadChange = (productId, cantidad) => {
+    setCantidades((prevCantidades) => ({
+      ...prevCantidades,
+      [productId]: cantidad,
+    }));
+  };
+
+
+  const { code, date, employeeId, clientId, discount, subTotal, total, cantidad } = sale;
 
   const onInputChange = (e) => {
     setSale({ ...sale, [e.target.name]: e.target.value });
@@ -53,8 +64,7 @@ export default function AddSale() {
       productosSeleccionados.includes(product.id)
     );
     const subtotalAmount = selectedProducts.reduce(
-      (subtotal, product) => subtotal + product.price,
-      0
+      (subtotal, product) =>subtotal + (product.price * (cantidades[product.id] || 0)),0
     );
     const discountPercentage = parseFloat(discount) || 0;
     const discountAmount = (subtotalAmount * discountPercentage) / 100;
@@ -153,100 +163,107 @@ export default function AddSale() {
         <h2 className="heading">Registrar Venta</h2>
 
         <form onSubmit={(e) => onSubmit(e)}>
-          <div className="form-group">
-            <label className="form-label">Código</label>
-            <input
-              type={'number'}
-              className="form-control"
-              placeholder="Ingresa el código de venta"
-              name="code"
-              value={code}
-              onChange={(e) => onInputChange(e)}
-            />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Fecha</label>
-            <input
-              type={'date'}
-              className="form-control"
-              placeholder="Ingresa la fecha"
-              name="date"
-              value={new Date().toISOString().split('T')[0]}
-            />
+          <div className="colums">
+            <div className="form-group">
+
+              <label className="form-label">Código</label>
+              <input
+                type={'number'}
+                className="form-control"
+                placeholder="Ingresa el código de venta"
+                name="code"
+                value={code}
+                onChange={(e) => onInputChange(e)}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Fecha</label>
+              <input
+                type={'date'}
+                className="form-control"
+                placeholder="Ingresa la fecha"
+                name="date"
+                value={new Date().toISOString().split('T')[0]}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Empleado</label>
+              <select
+                className="form-control"
+                name="employeeId"
+                value={employeeId}
+                onChange={(e) => onInputChange(e)}
+              >
+                <option value="">Selecciona un empleado</option>
+                {employees.map((employee) => (
+                  <option key={employee.id} value={employee.id}>
+                    {employee.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Cliente</label>
+              <select
+                className="form-control"
+                name="clientId"
+                value={clientId}
+                onChange={(e) => onInputChange(e)}
+              >
+                <option value="">Selecciona un cliente</option>
+                {clients.map((client) => (
+                  <option key={client.id} value={client.id}>
+                    {client.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Descuento(%)</label>
+              <input
+                type={'number'}
+                step="0.01"
+                className="form-control"
+                placeholder="Ingresa el descuento"
+                name="discount"
+                value={discount}
+                onChange={(e) => onInputChange(e)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Subtotal</label>
+              <input
+                type={'number'}
+                step="0.01"
+                className="form-control"
+                name="subTotal"
+                value={calculateTotal().subtotal}
+                readOnly
+              />
+            </div>
+
+
+            <div className="form-group">
+              <label className="form-label">Total</label>
+              <input
+                type={'number'}
+                step="0.01"
+                className="form-control"
+                placeholder="Ingresa el total"
+                name="total"
+                value={calculateTotal().total} // Usar el total calculado
+                onChange={(e) => onInputChange(e)} // Permitir que el usuario lo edite si es necesario
+              />
+            </div>
+
+
+
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Empleado</label>
-            <select
-              className="form-control"
-              name="employeeId"
-              value={employeeId}
-              onChange={(e) => onInputChange(e)}
-            >
-              <option value="">Selecciona un empleado</option>
-              {employees.map((employee) => (
-                <option key={employee.id} value={employee.id}>
-                  {employee.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Cliente</label>
-            <select
-              className="form-control"
-              name="clientId"
-              value={clientId}
-              onChange={(e) => onInputChange(e)}
-            >
-              <option value="">Selecciona un cliente</option>
-              {clients.map((client) => (
-                <option key={client.id} value={client.id}>
-                  {client.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Descuento(%)</label>
-            <input
-              type={'number'}
-              step="0.01"
-              className="form-control"
-              placeholder="Ingresa el descuento"
-              name="discount"
-              value={discount}
-              onChange={(e) => onInputChange(e)}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Subtotal</label>
-            <input
-              type={'number'}
-              step="0.01"
-              className="form-control"
-              name="subTotal"
-              value={calculateTotal().subtotal}
-              readOnly
-            />
-          </div>
-
-
-          <div className="form-group">
-            <label className="form-label">Total</label>
-            <input
-              type={'number'}
-              step="0.01"
-              className="form-control"
-              placeholder="Ingresa el total"
-              name="total"
-              value={calculateTotal().total} // Usar el total calculado
-              onChange={(e) => onInputChange(e)} // Permitir que el usuario lo edite si es necesario
-            />
-          </div>
 
           <div className="form-group">
             <label className="form-label">Productos</label>
@@ -255,6 +272,7 @@ export default function AddSale() {
                 <tr>
                   <th>Nombre del Producto</th>
                   <th>Seleccione el producto</th>
+                  <th>Cantidad</th>
                 </tr>
               </thead>
               <tbody>
@@ -268,14 +286,23 @@ export default function AddSale() {
                         checked={productosSeleccionados.includes(product.id)}
                       />
                     </td>
+                    <td>
+                      <input
+                        type="number"
+                        min="0"
+                        value={cantidades[product.id] || 0}
+                        onChange={(e) => handleCantidadChange(product.id, e.target.value)}
+                        disabled={!productosSeleccionados.includes(product.id)}
+                      />
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
           <a href="Sales" className="submit-button">Cancelar</a>
-            <button className="submit-button" type="submit">Registrar Venta</button>
-  
+          <button className="submit-button" type="submit">Registrar Venta</button>
+
         </form>
       </div>
     </div>

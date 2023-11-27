@@ -11,12 +11,12 @@ export default function AddBuys() {
     supplierId: '',
     employeeId: '',
     total: '',
-    amount:'',
+    amount: '',
   });
   const [products, setProducts] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [suppliers, setSupplier] = useState([]);
-  const { date, supplierId, employeeId, total,amount } = buys;
+  const { date, supplierId, employeeId, total, amount } = buys;
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
 
   const handleSeleccionProducto = (id) => {
@@ -111,68 +111,71 @@ export default function AddBuys() {
 
   return (
     <div>
+      
       <link rel="stylesheet" href="/sale.css"></link>
       <div className="container">
+      <h1>.</h1>
         <h2 className="heading">Registrar Compra</h2>
 
         <form onSubmit={(e) => onSubmit(e)}>
-          <div className="form-group">
-            <label className="form-label">Fecha</label>
-            <input
-              type={'date'}
-              className="form-control"
-              placeholder="Ingresa la fecha"
-              name="date"
-              value={new Date().toISOString().split('T')[0]}
-            />
-          </div>
+          <div className="colums">
+            <div className="form-group">
+              <label className="form-label">Fecha</label>
+              <input
+                type={'date'}
+                className="form-control"
+                placeholder="Ingresa la fecha"
+                name="date"
+                value={new Date().toISOString().split('T')[0]}
+              />
+            </div>
 
-          <div className="form-group">
-            <label className="form-label">Total</label>
-            <input
-              type={'number'}
-              step="0.01"
-              className="form-control"
-              placeholder="Ingresa el total"
-              name="total"
-              value={calculateTotal()}
-            />
-          </div>
+            <div className="form-group">
+              <label className="form-label">Total</label>
+              <input
+                type={'number'}
+                step="0.01"
+                className="form-control"
+                placeholder="Ingresa el total"
+                name="total"
+                value={calculateTotal()}
+              />
+            </div>
 
-          <div className="form-group">
-            <label className="form-label">Proveedor</label>
-            <select
-              className="form-control"
-              name="supplierId"
-              value={supplierId}
-              onChange={(e) => onInputChange(e)}
-            >
-              <option value="">Selecciona un proveedor</option>
-              {suppliers.map((supplier) => (
-                <option key={supplier.id} value={supplier.id}>
-                  {supplier.name}
-                </option>
-              ))}
-            </select>
-          </div>
+            <div className="form-group">
+              <label className="form-label">Proveedor</label>
+              <select
+                className="form-control"
+                name="supplierId"
+                value={supplierId}
+                onChange={(e) => onInputChange(e)}
+              >
+                <option value="">Selecciona un proveedor</option>
+                {suppliers.map((supplier) => (
+                  <option key={supplier.id} value={supplier.id}>
+                    {supplier.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="form-group">
-            <label className="form-label">Empleado</label>
-            <select
-              className="form-control"
-              name="employeeId"
-              value={employeeId}
-              onChange={(e) => onInputChange(e)}
-            >
-              <option value="">Selecciona un empleado</option>
-              {employees.map((employee) => (
-                <option key={employee.id} value={employee.id}>
-                  {employee.name}
-                </option>
-              ))}
-            </select>
+            <div className="form-group">
+              <label className="form-label">Empleado</label>
+              <select
+                className="form-control"
+                name="employeeId"
+                value={employeeId}
+                onChange={(e) => onInputChange(e)}
+              >
+                <option value="">Selecciona un empleado</option>
+                {employees.map((employee) => (
+                  <option key={employee.id} value={employee.id}>
+                    {employee.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-
           <div className='form-group'>
             <label className='form-label'>Productos</label>
             <table className="table">
@@ -200,17 +203,7 @@ export default function AddBuys() {
             {/* Puedes utilizar el array de productos seleccionados (productosSeleccionados) según tus necesidades */}
             <p>Productos seleccionados: {productosSeleccionados.join(', ')}</p>
           </div>
-          <div className="form-group">
-            <label className="form-label">Cantidad</label>
-            <input
-              type={'number'}
-              className="form-control"
-              placeholder="Ingresa la cantidad"
-              name='amount'
-              value={amount}
-              onChange={(e) => onInputChange(e)}
-            />
-          </div>
+
           <button className="submit-button" type="submit">
             Registrar Compra
           </button>

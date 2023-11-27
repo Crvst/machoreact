@@ -66,6 +66,7 @@ export default function ShowBuys() {
             </ul>
           </div>
         </div>
+        <a href="Buys" className="submit-button">Salir</a>
       </div>
     </div>
   );
