@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './AddVehicle.css';
 import { useNavigate } from 'react-router-dom';
 import addAlert from '../alerts/addAlert';
 import confirmAlert from '../alerts/confirmAlert';
@@ -64,7 +63,10 @@ export default function AddVehicle() {
 
 
   return (
+
     <div className="container">
+      <link rel="stylesheet" href="/globalForm.css"></link>
+
       <h1 className="heading">Registrar Vehiculo</h1>
 
       <form onSubmit={(e) => onSubmit(e)}>

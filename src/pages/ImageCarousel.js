@@ -5,6 +5,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import image4 from './image4.jpg';
 import image1 from './image1.jpg';
 
+
+
 import './ImageCarousel.css';
 
 const images = [image4, image1];
