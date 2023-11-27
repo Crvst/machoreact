@@ -141,6 +141,7 @@ export default function AddProduct() {
               value={productType}
               onChange={(e) => onInputChange(e)}
             >
+              <option value="">Selecciona un tipo de producto</option>
               <option value="Batería">Batería</option>
               <option value="Accesorio">Accesorio</option>
             </select>
