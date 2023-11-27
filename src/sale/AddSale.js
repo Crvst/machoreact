@@ -273,8 +273,9 @@ export default function AddSale() {
               </tbody>
             </table>
           </div>
+          <a href="Sales" className="submit-button">Cancelar</a>
             <button className="submit-button" type="submit">Registrar Venta</button>
-            <a href="Sales" className="submit-button">Cancelar</a>
+  
         </form>
       </div>
     </div>
