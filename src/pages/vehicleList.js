@@ -42,6 +42,7 @@ export default function VehicleList() {
 
   return (
     <div className="table-container">
+      <h1>.</h1>
       <h1>Vehiculos</h1>
       <table className="table">
         <thead className="table-header">

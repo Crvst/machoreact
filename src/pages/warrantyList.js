@@ -31,6 +31,7 @@ export default function ProductList() {
   return (
     <div className="table-container">
 
+      <h1>.</h1>  
       <h1>Garantías</h1>
       <table className="table">
         <thead className="table-header">

@@ -24,6 +24,8 @@ export default function BranchList() {
   return (
     <div>
       <div className="table-container">
+   
+        <h1>.</h1>
         <h1>Sucursales</h1>
         <table className="table">
           <thead className="table-header">

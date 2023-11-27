@@ -44,6 +44,7 @@ export default function ClientList() {
 
   return (
     <div className='table-container'>
+      <h1>.</h1>
       <h1>Clientes</h1>
         <table className="table">
           <thead className='table-header'>

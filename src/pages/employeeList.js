@@ -24,7 +24,8 @@ export default function EmployeeList() {
 
   return (
     <div className="table-container">
-        <h1>Empleados</h1>
+      <h1>.</h1>
+      <h1>Empleados</h1>
       <table className="table">
         <thead className="table-header">
           <tr>
@@ -47,16 +48,22 @@ export default function EmployeeList() {
               <td>{employee.phone}</td>
               <td>{employee.email}</td>
               <td className="actions">
-                <Link className="actions-link" to={`/ShowEmployee?id=${employee.id}`}>
+                <Link
+                  className="actions-link"
+                  to={`/ShowEmployee?id=${employee.id}`}
+                >
                   Ver
                 </Link>
-                <Link className="actions-link" to={`/EditEmployee?id=${employee.id}`}>
+                <Link
+                  className="actions-link"
+                  to={`/EditEmployee?id=${employee.id}`}
+                >
                   Editar
                 </Link>
                 <Link
                   className="actions-link "
                   onClick={() => {
-                    DeleteEmployee(employee.id,loadEmployees);
+                    DeleteEmployee(employee.id, loadEmployees);
                   }}
                 >
                   Eliminar
@@ -66,10 +73,11 @@ export default function EmployeeList() {
           ))}
         </tbody>
       </table>
-      <a href="/AddEmployee" class="btn-flotante">+</a>
+      <a href="/AddEmployee" class="btn-flotante">
+        +
+      </a>
 
-<Footer/>
-
+      <Footer />
     </div>
   );
 }

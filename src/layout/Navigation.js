@@ -11,7 +11,7 @@ const items = () => {
     },
     {
       link: '/Warranty',
-      title: 'Garantias',
+      title: 'Garantías',
     },
   ];
 };
