@@ -11,13 +11,14 @@ export default function AddBuys() {
     supplierId: '',
     employeeId: '',
     total: '',
-    amount: '',
+    cantidad: '',
   });
   const [products, setProducts] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [suppliers, setSupplier] = useState([]);
   const { date, supplierId, employeeId, total, amount } = buys;
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+  const [cantidades, setCantidades] = useState({});
 
   const handleSeleccionProducto = (id) => {
     const productoYaSeleccionado = productosSeleccionados.includes(id);
@@ -28,6 +29,13 @@ export default function AddBuys() {
     } else {
       setProductosSeleccionados([...productosSeleccionados, id]);
     }
+  };
+  ///cantidad de los productos
+  const handleCantidadChange = (productId, cantidad) => {
+    setCantidades((prevCantidades) => ({
+      ...prevCantidades,
+      [productId]: cantidad,
+    }));
   };
 
 
@@ -44,7 +52,7 @@ export default function AddBuys() {
 
   const calculateTotal = () => {
     const selectedProducts = products.filter((product) => productosSeleccionados.includes(product.id));
-    const totalAmount = selectedProducts.reduce((total, product) => total + product.price, 0);
+    const totalAmount = selectedProducts.reduce((total, product) => total + (product.price * (cantidades[product.id] || 0)), 0);
     return totalAmount.toFixed(2); // Redondear el resultado a dos decimales
   };
 
@@ -65,9 +73,11 @@ export default function AddBuys() {
 
     const buysId = response.data.id;
     for (const productId of productosSeleccionados) {
+      const cantidad = cantidades[productId] || 1;
       const buysProductData = {
         buysId: buysId,
         productId: productId,
+        quantity:cantidad,
       };
       console.log(buysProductData)
       await axios.post('https://localhost:7070/api/BuysProducts', buysProductData);
@@ -183,6 +193,7 @@ export default function AddBuys() {
                 <tr>
                   <th>Nombre del Producto</th>
                   <th>Seleccione el producto</th>
+                  <th>Cantidad</th>
                 </tr>
               </thead>
               <tbody>
@@ -194,6 +205,15 @@ export default function AddBuys() {
                         type="checkbox"
                         onChange={() => handleSeleccionProducto(product.id)}
                         checked={productosSeleccionados.includes(product.id)}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        min="0"
+                        value={cantidades[product.id] || 0}
+                        onChange={(e) => handleCantidadChange(product.id, e.target.value)}
+                        disabled={!productosSeleccionados.includes(product.id)}
                       />
                     </td>
                   </tr>

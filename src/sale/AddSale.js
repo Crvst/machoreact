@@ -64,7 +64,7 @@ export default function AddSale() {
       productosSeleccionados.includes(product.id)
     );
     const subtotalAmount = selectedProducts.reduce(
-      (subtotal, product) =>subtotal + (product.price * (cantidades[product.id] || 0)),0
+      (subtotal, product) => subtotal + (product.price * (cantidades[product.id] || 0)), 0
     );
     const discountPercentage = parseFloat(discount) || 0;
     const discountAmount = (subtotalAmount * discountPercentage) / 100;
@@ -83,7 +83,6 @@ export default function AddSale() {
       console.error('Por favor, complete todos los campos necesarios.');
 
       Swal.fire('Espacios Vacios', 'No puede dejar espacios vacios', 'error');
-      navigate('/AddSale');
     } else {
       e.preventDefault();
       // Calcular el total
@@ -105,18 +104,21 @@ export default function AddSale() {
 
       const saleId = response.data.id;
 
-      // Recorrer los productos seleccionados y agregarlos a la tabla de SaleProducts
+      // Recorrer los productos seleccionados y agregarlos a la tabla de SaleProducts según la cantidad
       for (const productId of productosSeleccionados) {
+        const cantidad = cantidades[productId] || 1; // Obtener la cantidad ingresada o usar 1 si no se ingresó nada
         const saleProductData = {
           saleId: saleId,
           productId: productId,
+          quantity:cantidad,
         };
 
         await axios.post('https://localhost:7070/api/SaleProducts', saleProductData);
-        navigate('/Sales');
-        Swal.fire('Venta Agregado!', 'La venta se almacenó con éxito!', 'success');
+
       }
 
+      navigate('/Sales');
+      Swal.fire('Venta Agregado!', 'La venta se almacenó con éxito!', 'success');
 
     }
 
