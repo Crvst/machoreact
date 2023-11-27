@@ -46,6 +46,7 @@ export default function ShowSale() {
 
   return (
     <div>
+      <h1>.</h1>
       <div className="view-container">
         <div className="view-row">
           <label className="view-label">Código:</label>
@@ -85,7 +86,9 @@ export default function ShowSale() {
             </ul>
           </div>
         </div>
+        <a href="Sales" className="submit-button">Salir</a>
       </div>
+
     </div>
   );
 }

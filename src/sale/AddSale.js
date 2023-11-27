@@ -59,19 +59,21 @@ export default function AddSale() {
     const discountPercentage = parseFloat(discount) || 0;
     const discountAmount = (subtotalAmount * discountPercentage) / 100;
     const totalAmount = subtotalAmount - discountAmount;
-  
+
     return {
       subtotal: subtotalAmount.toFixed(2),
       total: totalAmount.toFixed(2),
     };
   };
-  
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
   const onSubmit = async (e) => {
     if (!code || !date || !employeeId || !clientId || !discount || !productosSeleccionados.length) {
       console.error('Por favor, complete todos los campos necesarios.');
-      Swal.fire('No puede dejar espacios vacios', 'success');
+
+      Swal.fire('Espacios Vacios', 'No puede dejar espacios vacios', 'error');
+      navigate('/AddSale');
     } else {
       e.preventDefault();
       // Calcular el total
@@ -89,7 +91,7 @@ export default function AddSale() {
 
       };
       console.log(saleData)
-      const response = await axios.post('https://localhost:7070/api/Sales',saleData );
+      const response = await axios.post('https://localhost:7070/api/Sales', saleData);
 
       const saleId = response.data.id;
 
@@ -100,11 +102,12 @@ export default function AddSale() {
           productId: productId,
         };
 
-        await axios.post('https://localhost:7070/api/SaleProducts',saleProductData);
+        await axios.post('https://localhost:7070/api/SaleProducts', saleProductData);
+        navigate('/Sales');
+        Swal.fire('Venta Agregado!', 'La venta se almacenó con éxito!', 'success');
       }
 
-      navigate('/Sales');
-      Swal.fire('Venta Agregado!', 'La venta se almacenó con éxito!', 'success');
+
     }
 
   };
@@ -144,6 +147,7 @@ export default function AddSale() {
 
   return (
     <div>
+      <h1>.</h1>
       <link rel="stylesheet" href="/sale.css"></link>
       <div className="container">
         <h2 className="heading">Registrar Venta</h2>
@@ -206,7 +210,7 @@ export default function AddSale() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Descuento</label>
+            <label className="form-label">Descuento(%)</label>
             <input
               type={'number'}
               step="0.01"
@@ -268,12 +272,9 @@ export default function AddSale() {
                 ))}
               </tbody>
             </table>
-            <p>Productos seleccionados: {productosSeleccionados.join(', ')}</p>
           </div>
-
-          <button className="submit-button" type="submit">
-            Registrar Venta
-          </button>
+            <button className="submit-button" type="submit">Registrar Venta</button>
+            <a href="Sales" className="submit-button">Cancelar</a>
         </form>
       </div>
     </div>

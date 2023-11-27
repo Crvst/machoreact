@@ -90,6 +90,8 @@ export default function EditSale() {
   const onSubmit = async (e) => {
     e.preventDefault();
       const calculatedTotal = calculateTotal();
+
+
     const saleData = {
       id:parseInt(id),
       code: parseInt(code),
@@ -97,8 +99,8 @@ export default function EditSale() {
       employeeId: parseInt(employeeId),
       clientId: parseInt(clientId),
       discount: parseFloat(discount),
-      subTotal: parseFloat(calculatedTotal.subtotal),
-      total: parseFloat(calculatedTotal.total),
+      subTotal: parseFloat(parseInt(calculatedTotal.subtotal)+subTotal),
+      total: parseFloat(parseInt(calculatedTotal.total)+total),
 
     };
     console.log(saleData)

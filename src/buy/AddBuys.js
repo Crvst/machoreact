@@ -11,11 +11,12 @@ export default function AddBuys() {
     supplierId: '',
     employeeId: '',
     total: '',
+    amount:'',
   });
   const [products, setProducts] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [suppliers, setSupplier] = useState([]);
-  const { date, supplierId, employeeId, total } = buys;
+  const { date, supplierId, employeeId, total,amount } = buys;
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
 
   const handleSeleccionProducto = (id) => {
@@ -199,10 +200,21 @@ export default function AddBuys() {
             {/* Puedes utilizar el array de productos seleccionados (productosSeleccionados) según tus necesidades */}
             <p>Productos seleccionados: {productosSeleccionados.join(', ')}</p>
           </div>
-
+          <div className="form-group">
+            <label className="form-label">Cantidad</label>
+            <input
+              type={'number'}
+              className="form-control"
+              placeholder="Ingresa la cantidad"
+              name='amount'
+              value={amount}
+              onChange={(e) => onInputChange(e)}
+            />
+          </div>
           <button className="submit-button" type="submit">
             Registrar Compra
           </button>
+          <a href="Buys" className="submit-button">Cancelar</a>
         </form>
       </div>
     </div>
